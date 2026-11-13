@@ -1,0 +1,8 @@
+{
+  "edits": [
+    {
+      "old": "parts = line.strip().split()",
+      "new": "parts = line.strip().split(maxsplit=2)"
+    }
+  ]
+}

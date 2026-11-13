@@ -1,0 +1,11 @@
+{
+  "base_sha256": null,
+  "current_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "round_trip": true,
+  "delta_edits": [],
+  "task": "expense_app",
+  "round": 1,
+  "prepared_at_unix": 1794606846.2972162,
+  "source_spec_sha256": "3dc8d642c4327add0f7213defc231383631df571794c8238de841bc1490a726f",
+  "grader_sha256": "2d843050eb4af545ea327e55b24652ffd2026c2adc14ce70ae23dc2dff6de4a5"
+}

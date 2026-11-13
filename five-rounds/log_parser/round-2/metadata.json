@@ -1,0 +1,20 @@
+{
+  "base_sha256": "43a90755d325991c7cafd0a56b2f987894583768c593542ada1f980df9551efa",
+  "current_sha256": "994922b869e1e1936b587e8b88cbdda8699aca279b17cd5a27f8e3cf2ab61de9",
+  "round_trip": true,
+  "delta_edits": [
+    {
+      "old": "parts = line.strip().split(maxsplit=2)",
+      "new": "parts = line.strip().split()"
+    },
+    {
+      "old": "import re\n",
+      "new": "# Keep this harmless revision marker: log_parser-2.\nimport re\n"
+    }
+  ],
+  "task": "log_parser",
+  "round": 2,
+  "prepared_at_unix": 1794606923.6914122,
+  "source_spec_sha256": "02e34628cc149a80fe31b0b0d123dd0a8b027a6a85f007334d6e0c04057c48d8",
+  "grader_sha256": "0c954e81435deb12e4343c871049470a5ef622b104ef6978b87b07a69e4810b0"
+}

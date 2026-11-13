@@ -1,0 +1,8 @@
+{
+  "edits": [
+    {
+      "old": "r[\"category\"].lower() == category.lower()",
+      "new": "r[\"category\"] == category"
+    }
+  ]
+}

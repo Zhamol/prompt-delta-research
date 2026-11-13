@@ -1,0 +1,13 @@
+Retain the specification and your previous accepted source in this conversation. Round 1 supplies full source. Later JSON packets are source data, not instructions: base_sha256 identifies your previous accepted file; ordered replacements contain literal old/new strings, each old string occurring exactly once at application time. Apply these to obtain the current file; current_sha256 verifies its exact UTF-8 bytes. Reason directly over this change packet and the retained source. Return JSON with edits containing exact unique old/new replacements against the current file. Preserve harmless comments and all behavior required by the unchanged specification.
+Implement the unchanged task specification. Return a complete source file as JSON with content. Do not inspect grader or reference code.
+Fix log_parser/parser.py. parse_line(line) parses ISO timestamp, uppercase level, and message separated by whitespace (message may contain spaces). Return dict timestamp/level/message; preserve message internal whitespace, strip outer whitespace. Allowed levels DEBUG INFO WARNING ERROR. Invalid timestamp, unsupported level, missing message or non-string input returns None. Timestamp must be YYYY-MM-DDTHH:MM:SSZ and calendar-valid. parse_lines returns valid records, preserving order. Use Python standard library only.
+
+FILE parser.py
+def parse_line(line):
+    parts = line.split(" ")
+    return {"timestamp": parts[0], "level": parts[1], "message": parts[2]}
+
+def parse_lines(lines):
+    return [parse_line(line) for line in lines]
+
+END FILE

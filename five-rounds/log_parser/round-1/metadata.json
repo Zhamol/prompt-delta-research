@@ -1,0 +1,11 @@
+{
+  "base_sha256": null,
+  "current_sha256": "d3b6cacf7dfa534b570197d66f625ad13fa52c6511d47a3d0708d4238b59ceb3",
+  "round_trip": true,
+  "delta_edits": [],
+  "task": "log_parser",
+  "round": 1,
+  "prepared_at_unix": 1794606845.5099962,
+  "source_spec_sha256": "02e34628cc149a80fe31b0b0d123dd0a8b027a6a85f007334d6e0c04057c48d8",
+  "grader_sha256": "0c954e81435deb12e4343c871049470a5ef622b104ef6978b87b07a69e4810b0"
+}

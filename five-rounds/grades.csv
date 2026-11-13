@@ -1,0 +1,11 @@
+task,round,before_success,before_failed_tests,passed,tests_run,failures,errors,markers_preserved,grader_seconds,elapsed_including_orchestration_seconds,source_sha256,provider_input_tokens,provider_output_tokens,provider_cache_read_tokens,provider_cache_write_tokens,provider_reasoning_tokens,billed_usd,extra_saved_packet_or_grade_reads
+log_parser,1,False,3,True,3,0,0,True,0.411761,51.869,43a90755d325991c7cafd0a56b2f987894583768c593542ada1f980df9551efa,,,,,,,0
+log_parser,2,False,2,True,3,0,0,True,0.394166,23.85,a9c89c8c5e4e2cc612f077555106e0a9ac626039abe145fb2b83a9bb5c25ae21,,,,,,,0
+log_parser,3,False,1,True,3,0,0,True,0.402111,46.106,e7e8ef2ad1b6a3a3cddd0d9bc9d3a38f0f8198b69b91fa261b00a323bc267bca,,,,,,,0
+log_parser,4,False,1,True,3,0,0,True,0.37541,18.525,eff1474adbbeeaeaca4fa6f8e7c0a387a95002e5ce3412bb4f3d0bbe8f6896a7,,,,,,,0
+log_parser,5,False,1,True,3,0,0,True,0.38868,14.0,e464b0071651a7f0c9577159eaeb6a8b1a542a6b88e93bd84ce0c14efb9cc3f8,,,,,,,0
+expense_app,1,False,6,True,7,0,0,True,27.894083,81.5,dcdfe9e713224ab534b3bc7bf192855e8e360a254378366e2210f5057c376bd1,,,,,,,0
+expense_app,2,False,1,True,7,0,0,True,28.444543,89.964,c3a962cf93c2312cc1406dc6521eed22d37b96f32d968cd8fcd64e48cf280f3c,,,,,,,0
+expense_app,3,False,5,True,7,0,0,True,26.967343,105.987,23d8b1b5c3050afd938ce2403dee3a98d80105d48182868bda36c12214d43e6e,,,,,,,0
+expense_app,4,True,0,True,7,0,0,True,28.182216,99.068,91f03b985e7343ed964e6d60f9cb281ffda1d5630f6cdfd818b79e682f6f7873,,,,,,,2
+expense_app,5,False,3,True,7,0,0,True,27.649631,72.832,f424eb6b67dd3a2412fc83c1eaf7baad62479fc9a0cf0b59ee31fe155befd1b1,,,,,,,0

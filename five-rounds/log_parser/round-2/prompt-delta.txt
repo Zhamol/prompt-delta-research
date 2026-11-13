@@ -1,0 +1,2 @@
+Repair the regression under the unchanged specification.
+{"file":"parser.py","base_sha256":"43a90755d325991c7cafd0a56b2f987894583768c593542ada1f980df9551efa","replacements":[{"old":"parts = line.strip().split(maxsplit=2)","new":"parts = line.strip().split()"},{"old":"import re\n","new":"# Keep this harmless revision marker: log_parser-2.\nimport re\n"}],"current_sha256":"994922b869e1e1936b587e8b88cbdda8699aca279b17cd5a27f8e3cf2ab61de9"}

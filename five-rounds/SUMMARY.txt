@@ -1,0 +1,35 @@
+FIVE-ROUND SEQUENTIAL EDITING SMOKE TEST
+Full starting context, then four lossless change packets. Existing POC unchanged.
+
+Completed: 10/10 rounds; 50 hidden-test method executions.
+Failed starting versions/regressions: 9/10.
+Integrity checks: 36.
+
+o200k_base PROXY incoming payload tokens (all five rounds; includes codec overhead):
+log_parser: full 1429; delta 1192; reduction 16.59%. Including common answer/ack payloads: 9.83%.
+expense_app: full 5926; delta 1762; reduction 70.27%. Including common answer/ack payloads: 51.82%.
+
+Round results:
+log_parser 1: passed=True; tests=3; grading_seconds=0.411761; rejected_before_repair=True
+log_parser 2: passed=True; tests=3; grading_seconds=0.394166; rejected_before_repair=True
+log_parser 3: passed=True; tests=3; grading_seconds=0.402111; rejected_before_repair=True
+log_parser 4: passed=True; tests=3; grading_seconds=0.37541; rejected_before_repair=True
+log_parser 5: passed=True; tests=3; grading_seconds=0.38868; rejected_before_repair=True
+expense_app 1: passed=True; tests=7; grading_seconds=27.894083; rejected_before_repair=True
+expense_app 2: passed=True; tests=7; grading_seconds=28.444543; rejected_before_repair=True
+expense_app 3: passed=True; tests=7; grading_seconds=26.967343; rejected_before_repair=True
+expense_app 4: passed=True; tests=7; grading_seconds=28.182216; rejected_before_repair=False
+expense_app 5: passed=True; tests=7; grading_seconds=27.649631; rejected_before_repair=True
+
+LIMITS
+The same assistant designed the changes and wrote the repairs. Most repairs reverse simple, known mutations.
+This is a smoke test of sequential editing, not a blind accuracy benchmark or five independent repetitions.
+Source snapshots and hashes reconstruct exactly; that alone is not evidence of model understanding.
+Actual code was graded in fresh network-disabled Docker containers against existing unread hidden tests.
+Full-input counts are an offline counterfactual using the same answers, not separate model executions.
+Tokenizer proxies are not verified Codex billing counters. Complete tool wrappers, this conversation, reasoning and setup are excluded.
+Inputs include format instructions, JSON escaping, hashes, source changes and negative-control summaries; outputs and acknowledgments are also reported.
+Stable prefixes are local text measurements, not provider cache reads/writes. Billing and cache usage remain unknown.
+No Bedrock or external model API calls. No measured USD savings. POC task files were mounted read-only.
+Expense round 4 passed the existing grader before repair. A separate exact-case filter probe exposes this coverage gap.
+Round 4 required two extra local reads of the saved change packet and aggregate grade after the negative-control guard stopped. No full source was reread.

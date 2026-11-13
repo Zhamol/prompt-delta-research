@@ -1,0 +1,70 @@
+test_invalid (independent_grader.Grade.test_invalid) ... ok
+test_order (independent_grader.Grade.test_order) ... FAIL
+test_spaces (independent_grader.Grade.test_spaces) ... FAIL
+
+======================================================================
+FAIL: test_order (independent_grader.Grade.test_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/log_parser.py", line 13, in test_order
+    self.assertEqual([r["message"] for r in parse_lines(["bad"]+lines)], [f"line {i}" for i in range(40)])
+AssertionError: Lists differ: [] != ['line 0', 'line 1', 'line 2', 'line 3', '[383 chars] 39']
+
+Second list contains 40 additional elements.
+First extra element 0:
+'line 0'
+
+- []
++ ['line 0',
++  'line 1',
++  'line 2',
++  'line 3',
++  'line 4',
++  'line 5',
++  'line 6',
++  'line 7',
++  'line 8',
++  'line 9',
++  'line 10',
++  'line 11',
++  'line 12',
++  'line 13',
++  'line 14',
++  'line 15',
++  'line 16',
++  'line 17',
++  'line 18',
++  'line 19',
++  'line 20',
++  'line 21',
++  'line 22',
++  'line 23',
++  'line 24',
++  'line 25',
++  'line 26',
++  'line 27',
++  'line 28',
++  'line 29',
++  'line 30',
++  'line 31',
++  'line 32',
++  'line 33',
++  'line 34',
++  'line 35',
++  'line 36',
++  'line 37',
++  'line 38',
++  'line 39']
+
+======================================================================
+FAIL: test_spaces (independent_grader.Grade.test_spaces)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/log_parser.py", line 5, in test_spaces
+    self.assertEqual(parse_line(" 2024-02-29T23:59:59Z\tWARNING  a  b \t"),
+AssertionError: None != {'timestamp': '2024-02-29T23:59:59Z', 'level': 'WARNING', 'message': 'a  b'}
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.033s
+
+FAILED (failures=2)

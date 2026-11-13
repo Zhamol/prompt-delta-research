@@ -1,0 +1,1137 @@
+{
+  "disclaimer": "Synthetic offline token/codec measurements. No model inference, accuracy measurement, cache hits or USD savings measured. Public tokenizer proxies are NOT Claude token counts.",
+  "tiktoken_version": "0.12.0",
+  "script_sha256": "aa75e7074f968d2bd4d0b8a5111fd89ffdfcc04abf682952a139b0a1dd245481",
+  "fixture_sha256": {
+    "repetitive_code": "e135c35611d43aba19bda8c4852b26b528c91e11aee94b849bc5eafaae564b60",
+    "parameterized_code": "7dd31190f88470da2267905f518e17909259fcb459522353fe7790dbf180d47a",
+    "mostly_unique_code": "dc98d3e677612ea7311303f06a144cec6b91ebadc7ec037d1777501647578a07",
+    "ordered_logs": "c0f9f4a403ab4b2a5fa16b9645da7e55c17c659d1d50ccf486402f98882fbe41",
+    "short_prompt": "3e75adf5d246d779acb743a04c8814d7fcd7eee4d284f06aef3317e62e0ef323",
+    "escape_unicode": "c6044622c36e1a200f05c4676fb728b24979425ff7c5f3fe33334b9a1e0234e8",
+    "unique_identifiers": "4a35050236971c049498c2141e85a59686291a8abda1e07811cc77a22dbe0298",
+    "poc_log_parser": "c111ae32a94cea603c43f76c3dbf10279e76fd3fca2e32179f46a29cf9d06512",
+    "poc_expense_app": "b9e79bc38802b7bd62538b6199ed84ffcd053640fca447c76ac0c2d65027433b"
+  },
+  "checks_passed": 501,
+  "static": [
+    {
+      "fixture": "repetitive_code",
+      "tokenizer": "cl100k_base",
+      "method": "dictionary",
+      "original_tokens": 2239,
+      "encoded_tokens": 1063,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 1006,
+      "token_change_percent": -52.52,
+      "raw_fallback_tokens": 1063,
+      "round_trip": true
+    },
+    {
+      "fixture": "repetitive_code",
+      "tokenizer": "cl100k_base",
+      "method": "templates",
+      "original_tokens": 2239,
+      "encoded_tokens": 2048,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 1971,
+      "token_change_percent": -8.53,
+      "raw_fallback_tokens": 2048,
+      "round_trip": true
+    },
+    {
+      "fixture": "repetitive_code",
+      "tokenizer": "cl100k_base",
+      "method": "grammar",
+      "original_tokens": 2239,
+      "encoded_tokens": 2721,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 2648,
+      "token_change_percent": 21.53,
+      "raw_fallback_tokens": 2239,
+      "round_trip": true
+    },
+    {
+      "fixture": "repetitive_code",
+      "tokenizer": "o200k_base",
+      "method": "dictionary",
+      "original_tokens": 2239,
+      "encoded_tokens": 1066,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 1009,
+      "token_change_percent": -52.39,
+      "raw_fallback_tokens": 1066,
+      "round_trip": true
+    },
+    {
+      "fixture": "repetitive_code",
+      "tokenizer": "o200k_base",
+      "method": "templates",
+      "original_tokens": 2239,
+      "encoded_tokens": 2054,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 1977,
+      "token_change_percent": -8.26,
+      "raw_fallback_tokens": 2054,
+      "round_trip": true
+    },
+    {
+      "fixture": "repetitive_code",
+      "tokenizer": "o200k_base",
+      "method": "grammar",
+      "original_tokens": 2239,
+      "encoded_tokens": 2802,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 2729,
+      "token_change_percent": 25.15,
+      "raw_fallback_tokens": 2239,
+      "round_trip": true
+    },
+    {
+      "fixture": "parameterized_code",
+      "tokenizer": "cl100k_base",
+      "method": "dictionary",
+      "original_tokens": 2320,
+      "encoded_tokens": 2784,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 2727,
+      "token_change_percent": 20.0,
+      "raw_fallback_tokens": 2320,
+      "round_trip": true
+    },
+    {
+      "fixture": "parameterized_code",
+      "tokenizer": "cl100k_base",
+      "method": "templates",
+      "original_tokens": 2320,
+      "encoded_tokens": 2690,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 2613,
+      "token_change_percent": 15.95,
+      "raw_fallback_tokens": 2320,
+      "round_trip": true
+    },
+    {
+      "fixture": "parameterized_code",
+      "tokenizer": "cl100k_base",
+      "method": "grammar",
+      "original_tokens": 2320,
+      "encoded_tokens": 2800,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 2727,
+      "token_change_percent": 20.69,
+      "raw_fallback_tokens": 2320,
+      "round_trip": true
+    },
+    {
+      "fixture": "parameterized_code",
+      "tokenizer": "o200k_base",
+      "method": "dictionary",
+      "original_tokens": 2400,
+      "encoded_tokens": 2945,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 2888,
+      "token_change_percent": 22.71,
+      "raw_fallback_tokens": 2400,
+      "round_trip": true
+    },
+    {
+      "fixture": "parameterized_code",
+      "tokenizer": "o200k_base",
+      "method": "templates",
+      "original_tokens": 2400,
+      "encoded_tokens": 2696,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 2619,
+      "token_change_percent": 12.33,
+      "raw_fallback_tokens": 2400,
+      "round_trip": true
+    },
+    {
+      "fixture": "parameterized_code",
+      "tokenizer": "o200k_base",
+      "method": "grammar",
+      "original_tokens": 2400,
+      "encoded_tokens": 2961,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 2888,
+      "token_change_percent": 23.37,
+      "raw_fallback_tokens": 2400,
+      "round_trip": true
+    },
+    {
+      "fixture": "mostly_unique_code",
+      "tokenizer": "cl100k_base",
+      "method": "dictionary",
+      "original_tokens": 3126,
+      "encoded_tokens": 3337,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 3280,
+      "token_change_percent": 6.75,
+      "raw_fallback_tokens": 3126,
+      "round_trip": true
+    },
+    {
+      "fixture": "mostly_unique_code",
+      "tokenizer": "cl100k_base",
+      "method": "templates",
+      "original_tokens": 3126,
+      "encoded_tokens": 3950,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 3873,
+      "token_change_percent": 26.36,
+      "raw_fallback_tokens": 3126,
+      "round_trip": true
+    },
+    {
+      "fixture": "mostly_unique_code",
+      "tokenizer": "cl100k_base",
+      "method": "grammar",
+      "original_tokens": 3126,
+      "encoded_tokens": 3547,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 3474,
+      "token_change_percent": 13.47,
+      "raw_fallback_tokens": 3126,
+      "round_trip": true
+    },
+    {
+      "fixture": "mostly_unique_code",
+      "tokenizer": "o200k_base",
+      "method": "dictionary",
+      "original_tokens": 3162,
+      "encoded_tokens": 3390,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 3333,
+      "token_change_percent": 7.21,
+      "raw_fallback_tokens": 3162,
+      "round_trip": true
+    },
+    {
+      "fixture": "mostly_unique_code",
+      "tokenizer": "o200k_base",
+      "method": "templates",
+      "original_tokens": 3162,
+      "encoded_tokens": 4020,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 3943,
+      "token_change_percent": 27.13,
+      "raw_fallback_tokens": 3162,
+      "round_trip": true
+    },
+    {
+      "fixture": "mostly_unique_code",
+      "tokenizer": "o200k_base",
+      "method": "grammar",
+      "original_tokens": 3162,
+      "encoded_tokens": 3602,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 3529,
+      "token_change_percent": 13.92,
+      "raw_fallback_tokens": 3162,
+      "round_trip": true
+    },
+    {
+      "fixture": "ordered_logs",
+      "tokenizer": "cl100k_base",
+      "method": "dictionary",
+      "original_tokens": 6720,
+      "encoded_tokens": 7024,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 6967,
+      "token_change_percent": 4.52,
+      "raw_fallback_tokens": 6720,
+      "round_trip": true
+    },
+    {
+      "fixture": "ordered_logs",
+      "tokenizer": "cl100k_base",
+      "method": "templates",
+      "original_tokens": 6720,
+      "encoded_tokens": 3961,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 3884,
+      "token_change_percent": -41.06,
+      "raw_fallback_tokens": 3961,
+      "round_trip": true
+    },
+    {
+      "fixture": "ordered_logs",
+      "tokenizer": "cl100k_base",
+      "method": "grammar",
+      "original_tokens": 6720,
+      "encoded_tokens": 6510,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 6437,
+      "token_change_percent": -3.12,
+      "raw_fallback_tokens": 6510,
+      "round_trip": true
+    },
+    {
+      "fixture": "ordered_logs",
+      "tokenizer": "o200k_base",
+      "method": "dictionary",
+      "original_tokens": 6720,
+      "encoded_tokens": 7025,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 6968,
+      "token_change_percent": 4.54,
+      "raw_fallback_tokens": 6720,
+      "round_trip": true
+    },
+    {
+      "fixture": "ordered_logs",
+      "tokenizer": "o200k_base",
+      "method": "templates",
+      "original_tokens": 6720,
+      "encoded_tokens": 3961,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 3884,
+      "token_change_percent": -41.06,
+      "raw_fallback_tokens": 3961,
+      "round_trip": true
+    },
+    {
+      "fixture": "ordered_logs",
+      "tokenizer": "o200k_base",
+      "method": "grammar",
+      "original_tokens": 6720,
+      "encoded_tokens": 6511,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 6438,
+      "token_change_percent": -3.11,
+      "raw_fallback_tokens": 6511,
+      "round_trip": true
+    },
+    {
+      "fixture": "short_prompt",
+      "tokenizer": "cl100k_base",
+      "method": "dictionary",
+      "original_tokens": 13,
+      "encoded_tokens": 77,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 20,
+      "token_change_percent": 492.31,
+      "raw_fallback_tokens": 13,
+      "round_trip": true
+    },
+    {
+      "fixture": "short_prompt",
+      "tokenizer": "cl100k_base",
+      "method": "templates",
+      "original_tokens": 13,
+      "encoded_tokens": 97,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 20,
+      "token_change_percent": 646.15,
+      "raw_fallback_tokens": 13,
+      "round_trip": true
+    },
+    {
+      "fixture": "short_prompt",
+      "tokenizer": "cl100k_base",
+      "method": "grammar",
+      "original_tokens": 13,
+      "encoded_tokens": 93,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 20,
+      "token_change_percent": 615.38,
+      "raw_fallback_tokens": 13,
+      "round_trip": true
+    },
+    {
+      "fixture": "short_prompt",
+      "tokenizer": "o200k_base",
+      "method": "dictionary",
+      "original_tokens": 13,
+      "encoded_tokens": 78,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 21,
+      "token_change_percent": 500.0,
+      "raw_fallback_tokens": 13,
+      "round_trip": true
+    },
+    {
+      "fixture": "short_prompt",
+      "tokenizer": "o200k_base",
+      "method": "templates",
+      "original_tokens": 13,
+      "encoded_tokens": 98,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 21,
+      "token_change_percent": 653.85,
+      "raw_fallback_tokens": 13,
+      "round_trip": true
+    },
+    {
+      "fixture": "short_prompt",
+      "tokenizer": "o200k_base",
+      "method": "grammar",
+      "original_tokens": 13,
+      "encoded_tokens": 94,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 21,
+      "token_change_percent": 623.08,
+      "raw_fallback_tokens": 13,
+      "round_trip": true
+    },
+    {
+      "fixture": "escape_unicode",
+      "tokenizer": "cl100k_base",
+      "method": "dictionary",
+      "original_tokens": 26,
+      "encoded_tokens": 97,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 40,
+      "token_change_percent": 273.08,
+      "raw_fallback_tokens": 26,
+      "round_trip": true
+    },
+    {
+      "fixture": "escape_unicode",
+      "tokenizer": "cl100k_base",
+      "method": "templates",
+      "original_tokens": 26,
+      "encoded_tokens": 117,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 40,
+      "token_change_percent": 350.0,
+      "raw_fallback_tokens": 26,
+      "round_trip": true
+    },
+    {
+      "fixture": "escape_unicode",
+      "tokenizer": "cl100k_base",
+      "method": "grammar",
+      "original_tokens": 26,
+      "encoded_tokens": 113,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 40,
+      "token_change_percent": 334.62,
+      "raw_fallback_tokens": 26,
+      "round_trip": true
+    },
+    {
+      "fixture": "escape_unicode",
+      "tokenizer": "o200k_base",
+      "method": "dictionary",
+      "original_tokens": 26,
+      "encoded_tokens": 98,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 41,
+      "token_change_percent": 276.92,
+      "raw_fallback_tokens": 26,
+      "round_trip": true
+    },
+    {
+      "fixture": "escape_unicode",
+      "tokenizer": "o200k_base",
+      "method": "templates",
+      "original_tokens": 26,
+      "encoded_tokens": 118,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 41,
+      "token_change_percent": 353.85,
+      "raw_fallback_tokens": 26,
+      "round_trip": true
+    },
+    {
+      "fixture": "escape_unicode",
+      "tokenizer": "o200k_base",
+      "method": "grammar",
+      "original_tokens": 26,
+      "encoded_tokens": 114,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 41,
+      "token_change_percent": 338.46,
+      "raw_fallback_tokens": 26,
+      "round_trip": true
+    },
+    {
+      "fixture": "unique_identifiers",
+      "tokenizer": "cl100k_base",
+      "method": "dictionary",
+      "original_tokens": 4203,
+      "encoded_tokens": 4336,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 4279,
+      "token_change_percent": 3.16,
+      "raw_fallback_tokens": 4203,
+      "round_trip": true
+    },
+    {
+      "fixture": "unique_identifiers",
+      "tokenizer": "cl100k_base",
+      "method": "templates",
+      "original_tokens": 4203,
+      "encoded_tokens": 4505,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 4428,
+      "token_change_percent": 7.19,
+      "raw_fallback_tokens": 4203,
+      "round_trip": true
+    },
+    {
+      "fixture": "unique_identifiers",
+      "tokenizer": "cl100k_base",
+      "method": "grammar",
+      "original_tokens": 4203,
+      "encoded_tokens": 4352,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 4279,
+      "token_change_percent": 3.55,
+      "raw_fallback_tokens": 4203,
+      "round_trip": true
+    },
+    {
+      "fixture": "unique_identifiers",
+      "tokenizer": "o200k_base",
+      "method": "dictionary",
+      "original_tokens": 4177,
+      "encoded_tokens": 4311,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 4254,
+      "token_change_percent": 3.21,
+      "raw_fallback_tokens": 4177,
+      "round_trip": true
+    },
+    {
+      "fixture": "unique_identifiers",
+      "tokenizer": "o200k_base",
+      "method": "templates",
+      "original_tokens": 4177,
+      "encoded_tokens": 4481,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 4404,
+      "token_change_percent": 7.28,
+      "raw_fallback_tokens": 4177,
+      "round_trip": true
+    },
+    {
+      "fixture": "unique_identifiers",
+      "tokenizer": "o200k_base",
+      "method": "grammar",
+      "original_tokens": 4177,
+      "encoded_tokens": 4327,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 4254,
+      "token_change_percent": 3.59,
+      "raw_fallback_tokens": 4177,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_log_parser",
+      "tokenizer": "cl100k_base",
+      "method": "dictionary",
+      "original_tokens": 165,
+      "encoded_tokens": 243,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 186,
+      "token_change_percent": 47.27,
+      "raw_fallback_tokens": 165,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_log_parser",
+      "tokenizer": "cl100k_base",
+      "method": "templates",
+      "original_tokens": 165,
+      "encoded_tokens": 277,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 200,
+      "token_change_percent": 67.88,
+      "raw_fallback_tokens": 165,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_log_parser",
+      "tokenizer": "cl100k_base",
+      "method": "grammar",
+      "original_tokens": 165,
+      "encoded_tokens": 257,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 184,
+      "token_change_percent": 55.76,
+      "raw_fallback_tokens": 165,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_log_parser",
+      "tokenizer": "o200k_base",
+      "method": "dictionary",
+      "original_tokens": 165,
+      "encoded_tokens": 246,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 189,
+      "token_change_percent": 49.09,
+      "raw_fallback_tokens": 165,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_log_parser",
+      "tokenizer": "o200k_base",
+      "method": "templates",
+      "original_tokens": 165,
+      "encoded_tokens": 280,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 203,
+      "token_change_percent": 69.7,
+      "raw_fallback_tokens": 165,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_log_parser",
+      "tokenizer": "o200k_base",
+      "method": "grammar",
+      "original_tokens": 165,
+      "encoded_tokens": 260,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 187,
+      "token_change_percent": 57.58,
+      "raw_fallback_tokens": 165,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_expense_app",
+      "tokenizer": "cl100k_base",
+      "method": "dictionary",
+      "original_tokens": 757,
+      "encoded_tokens": 861,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 804,
+      "token_change_percent": 13.74,
+      "raw_fallback_tokens": 757,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_expense_app",
+      "tokenizer": "cl100k_base",
+      "method": "templates",
+      "original_tokens": 757,
+      "encoded_tokens": 933,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 856,
+      "token_change_percent": 23.25,
+      "raw_fallback_tokens": 757,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_expense_app",
+      "tokenizer": "cl100k_base",
+      "method": "grammar",
+      "original_tokens": 757,
+      "encoded_tokens": 877,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 804,
+      "token_change_percent": 15.85,
+      "raw_fallback_tokens": 757,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_expense_app",
+      "tokenizer": "o200k_base",
+      "method": "dictionary",
+      "original_tokens": 759,
+      "encoded_tokens": 863,
+      "instruction_tokens": 57,
+      "encoded_payload_tokens": 806,
+      "token_change_percent": 13.7,
+      "raw_fallback_tokens": 759,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_expense_app",
+      "tokenizer": "o200k_base",
+      "method": "templates",
+      "original_tokens": 759,
+      "encoded_tokens": 935,
+      "instruction_tokens": 77,
+      "encoded_payload_tokens": 858,
+      "token_change_percent": 23.19,
+      "raw_fallback_tokens": 759,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_expense_app",
+      "tokenizer": "o200k_base",
+      "method": "grammar",
+      "original_tokens": 759,
+      "encoded_tokens": 879,
+      "instruction_tokens": 73,
+      "encoded_payload_tokens": 806,
+      "token_change_percent": 15.81,
+      "raw_fallback_tokens": 759,
+      "round_trip": true
+    }
+  ],
+  "temporal": [
+    {
+      "fixture": "repetitive_code",
+      "tokenizer": "cl100k_base",
+      "original_cumulative_requests": [
+        2248,
+        4496,
+        6745,
+        8998
+      ],
+      "delta_cumulative_requests": [
+        2772,
+        2858,
+        2949,
+        3049
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        2772,
+        2858,
+        2949
+      ],
+      "original_final_tokens": 8998,
+      "delta_final_tokens": 3049,
+      "raw_fallback_final_tokens": 3049,
+      "round_trip": true
+    },
+    {
+      "fixture": "repetitive_code",
+      "tokenizer": "o200k_base",
+      "original_cumulative_requests": [
+        2249,
+        4498,
+        6748,
+        9002
+      ],
+      "delta_cumulative_requests": [
+        2851,
+        2935,
+        3024,
+        3124
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        2851,
+        2935,
+        3024
+      ],
+      "original_final_tokens": 9002,
+      "delta_final_tokens": 3124,
+      "raw_fallback_final_tokens": 3124,
+      "round_trip": true
+    },
+    {
+      "fixture": "parameterized_code",
+      "tokenizer": "cl100k_base",
+      "original_cumulative_requests": [
+        2329,
+        4658,
+        6988,
+        9322
+      ],
+      "delta_cumulative_requests": [
+        2845,
+        2919,
+        3006,
+        3107
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        2845,
+        2919,
+        3006
+      ],
+      "original_final_tokens": 9322,
+      "delta_final_tokens": 3107,
+      "raw_fallback_final_tokens": 3107,
+      "round_trip": true
+    },
+    {
+      "fixture": "parameterized_code",
+      "tokenizer": "o200k_base",
+      "original_cumulative_requests": [
+        2410,
+        4820,
+        7231,
+        9646
+      ],
+      "delta_cumulative_requests": [
+        3005,
+        3079,
+        3166,
+        3267
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        3005,
+        3079,
+        3166
+      ],
+      "original_final_tokens": 9646,
+      "delta_final_tokens": 3267,
+      "raw_fallback_final_tokens": 3267,
+      "round_trip": true
+    },
+    {
+      "fixture": "mostly_unique_code",
+      "tokenizer": "cl100k_base",
+      "original_cumulative_requests": [
+        3135,
+        6270,
+        9406,
+        12546
+      ],
+      "delta_cumulative_requests": [
+        3593,
+        3669,
+        3751,
+        3841
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        3593,
+        3669,
+        3751
+      ],
+      "original_final_tokens": 12546,
+      "delta_final_tokens": 3841,
+      "raw_fallback_final_tokens": 3841,
+      "round_trip": true
+    },
+    {
+      "fixture": "mostly_unique_code",
+      "tokenizer": "o200k_base",
+      "original_cumulative_requests": [
+        3172,
+        6344,
+        9517,
+        12694
+      ],
+      "delta_cumulative_requests": [
+        3647,
+        3723,
+        3805,
+        3895
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        3647,
+        3723,
+        3805
+      ],
+      "original_final_tokens": 12694,
+      "delta_final_tokens": 3895,
+      "raw_fallback_final_tokens": 3895,
+      "round_trip": true
+    },
+    {
+      "fixture": "ordered_logs",
+      "tokenizer": "cl100k_base",
+      "original_cumulative_requests": [
+        6729,
+        13458,
+        20188,
+        26922
+      ],
+      "delta_cumulative_requests": [
+        7094,
+        7186,
+        7280,
+        7377
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        7094,
+        7186,
+        7280
+      ],
+      "original_final_tokens": 26922,
+      "delta_final_tokens": 7377,
+      "raw_fallback_final_tokens": 7377,
+      "round_trip": true
+    },
+    {
+      "fixture": "ordered_logs",
+      "tokenizer": "o200k_base",
+      "original_cumulative_requests": [
+        6730,
+        13460,
+        20191,
+        26926
+      ],
+      "delta_cumulative_requests": [
+        7095,
+        7189,
+        7284,
+        7382
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        7095,
+        7189,
+        7284
+      ],
+      "original_final_tokens": 26926,
+      "delta_final_tokens": 7382,
+      "raw_fallback_final_tokens": 7382,
+      "round_trip": true
+    },
+    {
+      "fixture": "short_prompt",
+      "tokenizer": "cl100k_base",
+      "original_cumulative_requests": [
+        22,
+        44,
+        67,
+        94
+      ],
+      "delta_cumulative_requests": [
+        143,
+        229,
+        322,
+        414
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        143,
+        229,
+        322
+      ],
+      "original_final_tokens": 94,
+      "delta_final_tokens": 414,
+      "raw_fallback_final_tokens": 94,
+      "round_trip": true
+    },
+    {
+      "fixture": "short_prompt",
+      "tokenizer": "o200k_base",
+      "original_cumulative_requests": [
+        23,
+        46,
+        70,
+        98
+      ],
+      "delta_cumulative_requests": [
+        145,
+        235,
+        329,
+        423
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        145,
+        235,
+        329
+      ],
+      "original_final_tokens": 98,
+      "delta_final_tokens": 423,
+      "raw_fallback_final_tokens": 98,
+      "round_trip": true
+    },
+    {
+      "fixture": "escape_unicode",
+      "tokenizer": "cl100k_base",
+      "original_cumulative_requests": [
+        36,
+        72,
+        109,
+        150
+      ],
+      "delta_cumulative_requests": [
+        166,
+        256,
+        349,
+        450
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        166,
+        256,
+        349
+      ],
+      "original_final_tokens": 150,
+      "delta_final_tokens": 450,
+      "raw_fallback_final_tokens": 150,
+      "round_trip": true
+    },
+    {
+      "fixture": "escape_unicode",
+      "tokenizer": "o200k_base",
+      "original_cumulative_requests": [
+        37,
+        74,
+        112,
+        154
+      ],
+      "delta_cumulative_requests": [
+        166,
+        256,
+        349,
+        451
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        166,
+        256,
+        349
+      ],
+      "original_final_tokens": 154,
+      "delta_final_tokens": 451,
+      "raw_fallback_final_tokens": 154,
+      "round_trip": true
+    },
+    {
+      "fixture": "unique_identifiers",
+      "tokenizer": "cl100k_base",
+      "original_cumulative_requests": [
+        4212,
+        8424,
+        12637,
+        16854
+      ],
+      "delta_cumulative_requests": [
+        4399,
+        4477,
+        4566,
+        4666
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        4399,
+        4477,
+        4566
+      ],
+      "original_final_tokens": 16854,
+      "delta_final_tokens": 4666,
+      "raw_fallback_final_tokens": 4666,
+      "round_trip": true
+    },
+    {
+      "fixture": "unique_identifiers",
+      "tokenizer": "o200k_base",
+      "original_cumulative_requests": [
+        4187,
+        8374,
+        12562,
+        16754
+      ],
+      "delta_cumulative_requests": [
+        4374,
+        4454,
+        4543,
+        4643
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        4374,
+        4454,
+        4543
+      ],
+      "original_final_tokens": 16754,
+      "delta_final_tokens": 4643,
+      "raw_fallback_final_tokens": 4643,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_log_parser",
+      "tokenizer": "cl100k_base",
+      "original_cumulative_requests": [
+        174,
+        348,
+        523,
+        702
+      ],
+      "delta_cumulative_requests": [
+        308,
+        394,
+        486,
+        585
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        308,
+        394,
+        486
+      ],
+      "original_final_tokens": 702,
+      "delta_final_tokens": 585,
+      "raw_fallback_final_tokens": 585,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_log_parser",
+      "tokenizer": "o200k_base",
+      "original_cumulative_requests": [
+        175,
+        350,
+        526,
+        706
+      ],
+      "delta_cumulative_requests": [
+        310,
+        396,
+        488,
+        588
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        310,
+        396,
+        488
+      ],
+      "original_final_tokens": 706,
+      "delta_final_tokens": 588,
+      "raw_fallback_final_tokens": 588,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_expense_app",
+      "tokenizer": "cl100k_base",
+      "original_cumulative_requests": [
+        766,
+        1532,
+        2299,
+        3070
+      ],
+      "delta_cumulative_requests": [
+        926,
+        1008,
+        1098,
+        1194
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        926,
+        1008,
+        1098
+      ],
+      "original_final_tokens": 3070,
+      "delta_final_tokens": 1194,
+      "raw_fallback_final_tokens": 1194,
+      "round_trip": true
+    },
+    {
+      "fixture": "poc_expense_app",
+      "tokenizer": "o200k_base",
+      "original_cumulative_requests": [
+        769,
+        1538,
+        2308,
+        3082
+      ],
+      "delta_cumulative_requests": [
+        927,
+        1009,
+        1098,
+        1194
+      ],
+      "delta_stable_prefix_tokens": [
+        86,
+        927,
+        1009,
+        1098
+      ],
+      "original_final_tokens": 3082,
+      "delta_final_tokens": 1194,
+      "raw_fallback_final_tokens": 1194,
+      "round_trip": true
+    }
+  ]
+}

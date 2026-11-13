@@ -1,0 +1,17 @@
+test_invalid (independent_grader.Grade.test_invalid) ... ok
+test_order (independent_grader.Grade.test_order) ... ERROR
+test_spaces (independent_grader.Grade.test_spaces) ... ok
+
+======================================================================
+ERROR: test_order (independent_grader.Grade.test_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/log_parser.py", line 13, in test_order
+    self.assertEqual([r["message"] for r in parse_lines(["bad"]+lines)], [f"line {i}" for i in range(40)])
+                      ~^^^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.031s
+
+FAILED (errors=1)

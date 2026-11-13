@@ -1,0 +1,8 @@
+{
+  "edits": [
+    {
+      "old": "{\"DEBUG\", \"INFO\", \"WARNING\", \"ERROR\", \"TRACE\"}",
+      "new": "{\"DEBUG\", \"INFO\", \"WARNING\", \"ERROR\"}"
+    }
+  ]
+}

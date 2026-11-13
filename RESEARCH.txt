@@ -1,0 +1,233 @@
+PROMPT COMPRESSION RESEARCH — 2026-11-13
+
+Conclusion
+==========
+Do not build a universal always-on prompt compressor from these results. The
+strongest next experiment is an append-only literal-base-plus-delta representation
+for repeated file/tool snapshots. Use raw text for new, short, or mostly unique
+content. Templates are a narrower candidate for regular logs. Neither is a new
+compression principle, and no model accuracy or financial advantage is established.
+
+Scope and evidence
+==================
+No LLM inference or paid calls were performed. No AWS credentials were supplied to
+the experiment containers. The POC repository was only mounted read-only, and only
+its tasks directory was mounted. No hidden graders/reference solutions were used
+to tune encoders. No benchmark integration was implemented.
+
+All executable experiments ran in this existing, immutable Docker image:
+ghcr.io/berriai/litellm:v1.108.7@sha256:3c73aee257be4888fbbbecdce615e12487579a618fcc7dfb278264a3467a9f9f
+The image is a convenient existing tokenizer runtime, not evidence of compression
+support by LiteLLM. Experiments ran with --network none, --read-only, --cap-drop ALL,
+--security-opt no-new-privileges, and /tmp tmpfs. Public tokenizer vocabularies were
+downloaded separately, without credentials; their SHA256 values are recorded in
+tokenizer-assets.json. tiktoken version: 0.12.0.
+
+Tokenizers: cl100k_base and o200k_base. These are local public-tokenizer proxies,
+NOT Claude/Bedrock token counts and NOT model evaluations. No full Claude Code
+system prompt, tool schemas, or model outputs are counted. Table values count
+literal model-visible experimental payloads, including codec descriptions, JSON
+packet syntax, dictionary definitions, slots, references, and delta hashes.
+The supplied instructions contain no few-shot demonstrations; if a model needs
+examples or extra tool metadata, their additional tokens must be counted later.
+
+Fixtures: synthetic exact repeated code with one small exception; parameterized
+code; Python json.decoder source as a mostly unique-code sample; ordered logs
+with changing timestamps/IDs and one unusual error; a short prompt; Unicode,
+CRLF, NUL and delimiter-like strings; unique random identifiers; the POC log_parser
+starter plus SPEC and expense_app SPEC. Exact repeated-code fixtures deliberately
+contain repeated definitions and are a compression stress case, not a realistic
+distribution of production source files. The POC expense task starts without code.
+
+501 codec/integrity checks passed, including 107 edge/fuzz inputs, both tokenizers
+on nine named fixtures, four-snapshot histories, and stale-base rejection. Another
+27 control checks passed for gzip reconstruction and scripted exact edits. Scripted
+edits changed a unique exceptional return expression after reconstruction and
+rejected stale hashes and ambiguous matches. They do not test model-generated edits.
+
+Results: o200k_base, lower is fewer payload tokens
+================================================
+Fixture                 Raw    Dictionary   Templates   Shallow grammar
+Exact repeated code     2239       1066          2054          2802
+Parameterized code      2400       2945          2696          2961
+Mostly unique code      3162       3390          4020          3602
+Ordered logs            6720       7025          3961          6511
+Short prompt              13         78            98            94
+POC log parser           165        246           280           260
+POC expense app          759        863           935           879
+
+The same main static conclusions held with cl100k_base; detailed values are in
+results.json/CSV. No averages are used to conceal expansion cases. Dictionary is
+a deliberately simple exact-whole-line baseline, not a tuned state-of-the-art
+dictionary compressor. Grammar is a bounded greedy adjacent-pair prototype, with
+maximum depth two and 32 rule additions. Its poor results do not disprove grammar
+compression generally. Templates currently group lexical shapes, not AST nodes;
+they are not a production parser or an optimal template optimizer.
+
+Four-snapshot complete histories, literal baseline versus deltas:
+Fixture                 Original history    Delta history
+Exact repeated code          9002                3124
+Parameterized code           9646                3267
+Mostly unique code          12694                3895
+Ordered logs                26926                7382
+Short prompt                   98                 423
+POC log parser                706                 588
+POC expense app              3082                1194
+
+The four snapshots are original, unchanged reread, one whitespace edit, and one
+appended line. Both histories preserve all four snapshots. The delta representation
+includes its first full snapshot, format instructions, version hashes, and changes.
+These are constructed histories, NOT observed Claude Code traces. Real agent read
+patterns could eliminate the apparent opportunity. The initial temporal baseline
+used JSON escaping for raw text; that was corrected to literal snapshot text and
+the full test rerun. Published results here use the corrected baseline.
+
+results.json includes cumulative request sizes and common token-prefix counts.
+Those counts are NOT cache-write/read counters. No AWS cache behavior was tested.
+raw_fallback fields are a per-input size lower bound: they do not account for a
+format instruction header already installed in an ongoing session, selection
+signals, integration metadata, or future cache effects.
+
+Negative transport control: gzip+Base64 plus instructions reduced exact repeated
+code from 2239 to 187 proxy tokens but increased the POC parser from 165 to 432 and
+expense SPEC from 759 to 1590. It is not recommended for model-facing text: no direct
+model comprehension was demonstrated. Decompressing before the model would restore
+the original token cost; having the model/tool decompress adds complexity/calls.
+
+Three candidate designs
+=======================
+1. Exact lexical templates with ordered literal slot values.
+   Repeated structure becomes a template; every differing lexeme is a quoted value.
+   Preserve separators, whitespace, numeric spelling, record order and exceptions.
+   The model sees templates and ordered rows in the same context. Existing files
+   remain raw; the model emits ordinary edits. A local guard can reject stale or
+   ambiguous patches. It cannot guarantee that an accepted edit fixes the bug.
+   Freeze template definitions after first use; new definitions go in new messages,
+   never at the front of the old prompt. Do not promote tool data into system
+   instructions. Failure cases: wrong slot association, overlooked rare exception,
+   sparse rows, instruction overhead and confusion between definition and occurrence.
+   Related to log-template compression and schema-aware/tabular formats; not new.
+
+2. Shallow grammar with tokenizer-aware rule selection.
+   Repeated literal phrases become rules; a rule may reference earlier rules only,
+   with bounded expansion depth. Every byte is represented; no comments or syntax
+   are removed. The model interprets a small grammar and still writes raw edits.
+   Compare the entire rendered packet, including rule costs, before adding a rule.
+   IDs are local references, NOT newly added vocabulary tokens. Keep definitions
+   immutable across requests. Failure cases: multi-token IDs, weak greedy search,
+   indirection overhead, mistaken nesting, and lost visibility of important tokens.
+   Existing grammar-compression idea; our token-cost/depth restrictions are a
+   proposed engineering combination, not a novel codec claim. Local results weak.
+
+3. Append-only versioned snapshots with exact deltas.
+   Send the first literal snapshot once. Later snapshots carry an immutable base
+   identity and sorted nonoverlapping [start,end,replacement] edits. The prototype
+   uses Unicode character offsets and SHA256 versions; exact UTF-8 reconstruction
+   is checked. The model has the base and all changes in its actual context.
+   It cannot resolve a hash whose source exists only on the local machine.
+   Existing edit tools still receive raw code; a local version/unique-match guard
+   rejects stale and ambiguous operations. Human-readable hunks and short-chain
+   checkpoints may help models but have NOT been tested or counted here.
+   Historical messages remain fixed; new frames append. Both bases and deltas
+   still consume input/context tokens, even when billed as cache reads. On context
+   compaction or missing bases, resend a full snapshot and count it. Failure cases:
+   long chains, off-by-one/Unicode reasoning, wrong version, small inputs, extensive
+   rewrites, cache expiry and agents that do not reread files.
+   Delta encoding is long-established. Cache-stable model-facing use is a proposed
+   integration; no priority/originality claim is made.
+
+Feasibility limits
+==================
+Strictly shorter reversible representations for every possible input are impossible
+by counting/injectivity. Permit a raw fallback. Exact reconstruction by a decoder
+does not prove that any untrained model interprets the representation correctly.
+Treat preserved accuracy as a hypothesis, measured per exact model and task.
+Open-ended cross-model accuracy guarantees cannot be obtained from codec tests.
+JSON value preservation is weaker than byte preservation: 1, 1.0, duplicate keys,
+key order and whitespace may carry information. Do not parse/re-serialize such
+details away without a residual that restores them exactly (and is fully counted).
+This prototype's supported domain is UTF-8 text; arbitrary binary inputs would
+need literal/raw handling or an explicitly specified binary envelope.
+
+Claude Code / LiteLLM / Bedrock implications
+=========================================
+Encode new user/tool-result text before its first model exposure. Keep role/tool
+call IDs, JSON API schemas, assistant responses and signed thinking unchanged.
+Replay the exact same encoded history thereafter; don't regenerate global IDs
+from today's entire prompt. Thread/conversation mapping, agent compaction and
+parallel reads require explicit testing before a transparent proxy can be trusted.
+Official preserved-thinking docs warn about prefix changes. Cache keys and limits
+are provider/model-specific, and going below the cache threshold can lose savings.
+Cache storage does not let the client send undefined local references for free.
+
+What could be a research contribution
+====================================
+Not templates, grammar, deltas, or dictionary compression themselves. A defensible
+possible contribution would be evidence that an append-only, cache-aware policy
+selecting raw/templates/deltas improves cost per correct coding task across models,
+with an exact-edit guard and complete accounting. That combination needs a broader
+prior-art search, a fair stateful dictionary baseline, ablations and end-to-end data.
+
+Next comparison (not run or authorized by this research)
+=======================================================
+Four arms: original; fixed context selection; simple dictionary; candidate 3.
+Give the dictionary arm stable within-session definitions and reuse so it is not
+artificially weakened. Use the same exact accessible model version, Claude Code,
+LiteLLM image, tasks, initial files, tools, settings, output/turn/time/spend limits.
+TokenEconomizer off in all arms. Reuse unchanged POC hidden graders; never expose
+them to the encoder or agent. Start with log_parser and expense_app; eight sessions
+are a feasibility pilot (two tasks x four arms). If justified and approved, extend
+to three paired repetitions, 24 sessions total; no statistical proof from one run.
+Rotate arm order. Fresh sandbox/session/encoder state for each; caching on with
+isolated namespaces across arms/repetitions and reuse within each session.
+Allow equal retrieval tools in all arms. Count expansions/retrievals/retries and
+separate success using compact input from success after requesting raw recovery.
+Keep native edit/output format unchanged, and identical graders outside sandboxes.
+
+Measure real provider uncached input, cache writes per TTL, cache reads, output
+(including billable reasoning), all auxiliary/failed calls, latency, local compute,
+edit-application failures, hidden-test results, and cost per successful task. Unknown
+usage remains unknown. Use dated routing-specific prices and reconcile AWS billing
+separately. Report pair-level correctness and cost rather than just aggregate savings.
+Diagnostic cost is separate but included in overall project spending. A future paid
+comparison requires a new concrete budget plan; this research spends no model budget.
+
+Continue only if actual agent traces contain reducible repeated snapshots, the
+target-model full-request counts improve after all overhead, exact editing/format
+comprehension survive challenge tests, and a small paired trial shows credible cost
+benefit without task regressions. If stateful dictionary ties/wins, prefer it. If
+POC agents rarely reread files or output dominates cost, stop rather than manufacture
+larger repetitive tasks to claim success. Additional harder tasks must be disclosed.
+
+Selected primary sources (reviewed 2026-11-13)
+============================================
+https://arxiv.org/abs/2604.13066
+  Dictionary compression without retraining; decompression proxy is a limitation.
+https://arxiv.org/abs/2506.00307
+  Meta-token compression; model fine-tuning/new vocabulary differs from our setup.
+https://github.com/gtkcyber/compact_prompt
+https://arxiv.org/abs/2510.18043
+  Existing abbreviation implementation plus lossy pruning/quantization components.
+https://github.com/toon-format/toon
+  JSON data-model serialization, not exact original-byte preservation.
+https://arxiv.org/abs/2605.29676
+  End-to-end agent evaluation; format changes can cause downstream failures.
+https://aaif.io/blog/we-added-toon-to-our-mcp-server-then-removed-it
+  First-party deployment report; token savings did not consistently materialize.
+https://arxiv.org/abs/cs/9709102
+  SEQUITUR and established grammar-compression prior art.
+https://www.rfc-editor.org/info/rfc3284/
+  Established delta-encoding prior art; not an LLM comprehension study.
+https://github.com/microsoft/LLMLingua
+  Existing lossy prompt-compression implementation; not an exact-preservation codec.
+https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html
+https://platform.claude.com/docs/en/build-with-claude/preserved-thinking
+  Prefix stability, cache thresholds and replay requirements.
+
+Reproduce locally
+=================
+From this research folder's parent directory, with tokenizer-cache already present:
+docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges --tmpfs /tmp -e TIKTOKEN_CACHE_DIR=/research/tokenizer-cache -v "$PWD/compression-research:/research" -v /Users/jimmred/Documents/bedrock-token-bench/tasks:/poc:ro --entrypoint python ghcr.io/berriai/litellm:v1.108.7@sha256:3c73aee257be4888fbbbecdce615e12487579a618fcc7dfb278264a3467a9f9f /research/experiment.py
+Use the same command with /research/controls.py for the additional controls.
+results.json contains script and fixture hashes; tokenizer-assets.json contains
+vocabulary hashes. examples/ holds the literal tested payloads for inspection.

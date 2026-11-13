@@ -1,0 +1,16 @@
+test_invalid (independent_grader.Grade.test_invalid) ... FAIL
+test_order (independent_grader.Grade.test_order) ... ok
+test_spaces (independent_grader.Grade.test_spaces) ... ok
+
+======================================================================
+FAIL: test_invalid (independent_grader.Grade.test_invalid)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/log_parser.py", line 10, in test_invalid
+    self.assertIsNone(parse_line(x),repr(x))
+AssertionError: {'timestamp': '2024-01-01T00:00:00Z', 'level': 'TRACE', 'message': 'bad'} is not None : '2024-01-01T00:00:00Z TRACE bad'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.028s
+
+FAILED (failures=1)

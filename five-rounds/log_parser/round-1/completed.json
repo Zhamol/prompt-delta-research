@@ -1,0 +1,12 @@
+{
+  "tests_run": 3,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "successful": true,
+  "exit_code": 0,
+  "grader_seconds": 0.411761,
+  "source_sha256": "43a90755d325991c7cafd0a56b2f987894583768c593542ada1f980df9551efa",
+  "marker_preservation": true,
+  "elapsed_since_prepare_seconds": 51.869
+}

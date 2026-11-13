@@ -1,0 +1,6 @@
+**
+!Dockerfile.grader
+!graders/
+!graders/**
+!sandbox/
+!sandbox/**

@@ -1,0 +1,48 @@
+test_boundaries_unicode_and_exact_cents (independent_grader.Grade.test_boundaries_unicode_and_exact_cents) ... ok
+test_core_and_persistence (independent_grader.Grade.test_core_and_persistence) ... ok
+test_corrupt_storage_never_reset (independent_grader.Grade.test_corrupt_storage_never_reset) ... 
+  test_corrupt_storage_never_reset (independent_grader.Grade.test_corrupt_storage_never_reset) (storage='{"next_id": true, "expenses": []}') ... FAIL
+  test_corrupt_storage_never_reset (independent_grader.Grade.test_corrupt_storage_never_reset) (storage='{"next_id": 2, "expenses": [{"id": true, "amount_cents": 1, "category": "x", "date": "2024-01-01"}]}') ... FAIL
+  test_corrupt_storage_never_reset (independent_grader.Grade.test_corrupt_storage_never_reset) (storage='{"next_id": 2, "expenses": [{"id": 1, "amount_cents": true, "category": "x", "date": "2024-01-01"}]}') ... FAIL
+test_deterministic_sequence (independent_grader.Grade.test_deterministic_sequence) ... ok
+test_empty_and_separate_databases (independent_grader.Grade.test_empty_and_separate_databases) ... ok
+test_invalid_amounts_do_not_consume_ids (independent_grader.Grade.test_invalid_amounts_do_not_consume_ids) ... ok
+test_invalid_dates_categories_and_commands (independent_grader.Grade.test_invalid_dates_categories_and_commands) ... ok
+
+======================================================================
+FAIL: test_corrupt_storage_never_reset (independent_grader.Grade.test_corrupt_storage_never_reset) (storage='{"next_id": true, "expenses": []}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/expense_app.py", line 108, in test_corrupt_storage_never_reset
+    self.call("list",valid=False);self.call("summary",valid=False);self.add(valid=False)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/repo/graders/expense_app.py", line 27, in call
+    self.assertNotEqual(result.returncode,0,"invalid operation succeeded")
+AssertionError: 0 == 0 : invalid operation succeeded
+
+======================================================================
+FAIL: test_corrupt_storage_never_reset (independent_grader.Grade.test_corrupt_storage_never_reset) (storage='{"next_id": 2, "expenses": [{"id": true, "amount_cents": 1, "category": "x", "date": "2024-01-01"}]}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/expense_app.py", line 108, in test_corrupt_storage_never_reset
+    self.call("list",valid=False);self.call("summary",valid=False);self.add(valid=False)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/repo/graders/expense_app.py", line 27, in call
+    self.assertNotEqual(result.returncode,0,"invalid operation succeeded")
+AssertionError: 0 == 0 : invalid operation succeeded
+
+======================================================================
+FAIL: test_corrupt_storage_never_reset (independent_grader.Grade.test_corrupt_storage_never_reset) (storage='{"next_id": 2, "expenses": [{"id": 1, "amount_cents": true, "category": "x", "date": "2024-01-01"}]}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/expense_app.py", line 108, in test_corrupt_storage_never_reset
+    self.call("list",valid=False);self.call("summary",valid=False);self.add(valid=False)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/repo/graders/expense_app.py", line 27, in call
+    self.assertNotEqual(result.returncode,0,"invalid operation succeeded")
+AssertionError: 0 == 0 : invalid operation succeeded
+
+----------------------------------------------------------------------
+Ran 7 tests in 24.919s
+
+FAILED (failures=3)

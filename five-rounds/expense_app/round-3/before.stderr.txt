@@ -1,0 +1,84 @@
+test_boundaries_unicode_and_exact_cents (independent_grader.Grade.test_boundaries_unicode_and_exact_cents) ... FAIL
+test_core_and_persistence (independent_grader.Grade.test_core_and_persistence) ... FAIL
+test_corrupt_storage_never_reset (independent_grader.Grade.test_corrupt_storage_never_reset) ... ok
+test_deterministic_sequence (independent_grader.Grade.test_deterministic_sequence) ... FAIL
+test_empty_and_separate_databases (independent_grader.Grade.test_empty_and_separate_databases) ... FAIL
+test_invalid_amounts_do_not_consume_ids (independent_grader.Grade.test_invalid_amounts_do_not_consume_ids) ... FAIL
+test_invalid_dates_categories_and_commands (independent_grader.Grade.test_invalid_dates_categories_and_commands) ... ok
+
+======================================================================
+FAIL: test_boundaries_unicode_and_exact_cents (independent_grader.Grade.test_boundaries_unicode_and_exact_cents)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/expense_app.py", line 81, in test_boundaries_unicode_and_exact_cents
+    row=self.add(amount,category,date)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/repo/graders/expense_app.py", line 32, in add
+    return self.call("add","--amount",amount,"--category",category,"--date",date,**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/repo/graders/expense_app.py", line 25, in call
+    self.assertEqual(result.returncode,0,result.stderr)
+AssertionError: 1 != 0 : Error: invalid next_id
+
+
+======================================================================
+FAIL: test_core_and_persistence (independent_grader.Grade.test_core_and_persistence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/expense_app.py", line 37, in test_core_and_persistence
+    b=self.add("0.66","travel","2000-01-01")
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/repo/graders/expense_app.py", line 32, in add
+    return self.call("add","--amount",amount,"--category",category,"--date",date,**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/repo/graders/expense_app.py", line 25, in call
+    self.assertEqual(result.returncode,0,result.stderr)
+AssertionError: 1 != 0 : Error: invalid next_id
+
+
+======================================================================
+FAIL: test_deterministic_sequence (independent_grader.Grade.test_deterministic_sequence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/expense_app.py", line 93, in test_deterministic_sequence
+    self.assertEqual(self.add(f"{n//100}.{n%100:02d}",category,"2024-06-30"),row)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/repo/graders/expense_app.py", line 32, in add
+    return self.call("add","--amount",amount,"--category",category,"--date",date,**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/repo/graders/expense_app.py", line 25, in call
+    self.assertEqual(result.returncode,0,result.stderr)
+AssertionError: 1 != 0 : Error: invalid next_id
+
+
+======================================================================
+FAIL: test_empty_and_separate_databases (independent_grader.Grade.test_empty_and_separate_databases)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/expense_app.py", line 56, in test_empty_and_separate_databases
+    self.assertEqual(len(self.call("list")),1)
+                         ^^^^^^^^^^^^^^^^^
+  File "/repo/graders/expense_app.py", line 25, in call
+    self.assertEqual(result.returncode,0,result.stderr)
+AssertionError: 1 != 0 : Error: invalid next_id
+
+
+======================================================================
+FAIL: test_invalid_amounts_do_not_consume_ids (independent_grader.Grade.test_invalid_amounts_do_not_consume_ids)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/expense_app.py", line 63, in test_invalid_amounts_do_not_consume_ids
+    self.assertEqual(self.add()["id"],2)
+                     ^^^^^^^^^^
+  File "/repo/graders/expense_app.py", line 32, in add
+    return self.call("add","--amount",amount,"--category",category,"--date",date,**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/repo/graders/expense_app.py", line 25, in call
+    self.assertEqual(result.returncode,0,result.stderr)
+AssertionError: 1 != 0 : Error: invalid next_id
+
+
+----------------------------------------------------------------------
+Ran 7 tests in 20.656s
+
+FAILED (failures=5)

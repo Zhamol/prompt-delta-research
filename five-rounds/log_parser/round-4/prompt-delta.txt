@@ -1,0 +1,2 @@
+Repair the regression under the unchanged specification.
+{"file":"parser.py","base_sha256":"e7e8ef2ad1b6a3a3cddd0d9bc9d3a38f0f8198b69b91fa261b00a323bc267bca","replacements":[{"old":"{\"DEBUG\", \"INFO\", \"WARNING\", \"ERROR\"}","new":"{\"DEBUG\", \"INFO\", \"WARNING\", \"ERROR\", \"TRACE\"}"},{"old":"# Keep this harmless revision marker: log_parser-3.\n","new":"# Keep this harmless revision marker: log_parser-4.\n# Keep this harmless revision marker: log_parser-3.\n"}],"current_sha256":"311706525e06ce6f986c50443de312e64c6c5792e62ff86788981b6728a62487"}

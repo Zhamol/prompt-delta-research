@@ -1,0 +1,24 @@
+{
+  "input": {
+    "returned_ids": [
+      1,
+      2
+    ],
+    "expected_ids": [
+      1
+    ],
+    "exact_match_pass": false,
+    "database_unchanged": true
+  },
+  "output": {
+    "returned_ids": [
+      1
+    ],
+    "expected_ids": [
+      1
+    ],
+    "exact_match_pass": true,
+    "database_unchanged": true
+  },
+  "scope": "Supplementary exact-case matching interpretation used by baseline; existing hidden tests passed both versions."
+}

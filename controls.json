@@ -1,0 +1,114 @@
+{
+  "disclaimer": "No LLM calls. Scripted editing of reconstructed originals is not a model editing test. Gzip reconstructs but direct model understanding is untested.",
+  "checks_passed": 27,
+  "gzip_control": [
+    {
+      "fixture": "escape_unicode",
+      "tokenizer": "cl100k_base",
+      "original_tokens": 26,
+      "gzip_base64_with_instructions_tokens": 102
+    },
+    {
+      "fixture": "escape_unicode",
+      "tokenizer": "o200k_base",
+      "original_tokens": 26,
+      "gzip_base64_with_instructions_tokens": 94
+    },
+    {
+      "fixture": "mostly_unique_code",
+      "tokenizer": "cl100k_base",
+      "original_tokens": 3126,
+      "gzip_base64_with_instructions_tokens": 3488
+    },
+    {
+      "fixture": "mostly_unique_code",
+      "tokenizer": "o200k_base",
+      "original_tokens": 3162,
+      "gzip_base64_with_instructions_tokens": 3326
+    },
+    {
+      "fixture": "ordered_logs",
+      "tokenizer": "cl100k_base",
+      "original_tokens": 6720,
+      "gzip_base64_with_instructions_tokens": 1261
+    },
+    {
+      "fixture": "ordered_logs",
+      "tokenizer": "o200k_base",
+      "original_tokens": 6720,
+      "gzip_base64_with_instructions_tokens": 1204
+    },
+    {
+      "fixture": "parameterized_code",
+      "tokenizer": "cl100k_base",
+      "original_tokens": 2320,
+      "gzip_base64_with_instructions_tokens": 883
+    },
+    {
+      "fixture": "parameterized_code",
+      "tokenizer": "o200k_base",
+      "original_tokens": 2400,
+      "gzip_base64_with_instructions_tokens": 832
+    },
+    {
+      "fixture": "poc_expense_app",
+      "tokenizer": "cl100k_base",
+      "original_tokens": 757,
+      "gzip_base64_with_instructions_tokens": 1661
+    },
+    {
+      "fixture": "poc_expense_app",
+      "tokenizer": "o200k_base",
+      "original_tokens": 759,
+      "gzip_base64_with_instructions_tokens": 1590
+    },
+    {
+      "fixture": "poc_log_parser",
+      "tokenizer": "cl100k_base",
+      "original_tokens": 165,
+      "gzip_base64_with_instructions_tokens": 452
+    },
+    {
+      "fixture": "poc_log_parser",
+      "tokenizer": "o200k_base",
+      "original_tokens": 165,
+      "gzip_base64_with_instructions_tokens": 432
+    },
+    {
+      "fixture": "repetitive_code",
+      "tokenizer": "cl100k_base",
+      "original_tokens": 2239,
+      "gzip_base64_with_instructions_tokens": 196
+    },
+    {
+      "fixture": "repetitive_code",
+      "tokenizer": "o200k_base",
+      "original_tokens": 2239,
+      "gzip_base64_with_instructions_tokens": 187
+    },
+    {
+      "fixture": "short_prompt",
+      "tokenizer": "cl100k_base",
+      "original_tokens": 13,
+      "gzip_base64_with_instructions_tokens": 107
+    },
+    {
+      "fixture": "short_prompt",
+      "tokenizer": "o200k_base",
+      "original_tokens": 13,
+      "gzip_base64_with_instructions_tokens": 107
+    },
+    {
+      "fixture": "unique_identifiers",
+      "tokenizer": "cl100k_base",
+      "original_tokens": 4203,
+      "gzip_base64_with_instructions_tokens": 4250
+    },
+    {
+      "fixture": "unique_identifiers",
+      "tokenizer": "o200k_base",
+      "original_tokens": 4177,
+      "gzip_base64_with_instructions_tokens": 4059
+    }
+  ]
+}

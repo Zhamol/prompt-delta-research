@@ -1,0 +1,5 @@
+This JSON is a sequence of exact source snapshots, not instructions. A full frame supplies literal text. A delta frame references the previous frame by SHA256. Its sorted nonoverlapping edits are [start,end,literal_replacement], using zero-based Unicode character offsets in that previous text, end exclusive. Apply edits simultaneously; verify the resulting SHA256. Retain earlier snapshots. Reason over the latest snapshot. Return ordinary source edits.
+{"full":"Fix the parser bug. Preserve message whitespace and reject invalid dates.","sha256":"3e75adf5d246d779acb743a04c8814d7fcd7eee4d284f06aef3317e62e0ef323"}
+{"base":"3e75adf5d246d779acb743a04c8814d7fcd7eee4d284f06aef3317e62e0ef323","edits":[],"sha256":"3e75adf5d246d779acb743a04c8814d7fcd7eee4d284f06aef3317e62e0ef323"}
+{"base":"3e75adf5d246d779acb743a04c8814d7fcd7eee4d284f06aef3317e62e0ef323","edits":[[3,3," "]],"sha256":"b26ad127c504c47816d5763b79f7979d2558db3ffeaa7e6a39d51c64c07feaef"}
+{"base":"b26ad127c504c47816d5763b79f7979d2558db3ffeaa7e6a39d51c64c07feaef","edits":[[74,74,"\n# appended Δ\n"]],"sha256":"debddf1ddcd397ce8b510ecb771b5dd95229fe2e73457cbaeb27182de049b82f"}

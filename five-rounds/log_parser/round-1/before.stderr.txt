@@ -1,0 +1,45 @@
+test_invalid (independent_grader.Grade.test_invalid) ... ERROR
+test_order (independent_grader.Grade.test_order) ... ERROR
+test_spaces (independent_grader.Grade.test_spaces) ... FAIL
+
+======================================================================
+ERROR: test_invalid (independent_grader.Grade.test_invalid)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/log_parser.py", line 10, in test_invalid
+    self.assertIsNone(parse_line(x),repr(x))
+                      ^^^^^^^^^^^^^
+  File "/research/five-rounds/log_parser/round-1/input/log_parser/parser.py", line 2, in parse_line
+    parts = line.split(" ")
+            ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'split'
+
+======================================================================
+ERROR: test_order (independent_grader.Grade.test_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/log_parser.py", line 13, in test_order
+    self.assertEqual([r["message"] for r in parse_lines(["bad"]+lines)], [f"line {i}" for i in range(40)])
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/research/five-rounds/log_parser/round-1/input/log_parser/parser.py", line 6, in parse_lines
+    return [parse_line(line) for line in lines]
+            ^^^^^^^^^^^^^^^^
+  File "/research/five-rounds/log_parser/round-1/input/log_parser/parser.py", line 3, in parse_line
+    return {"timestamp": parts[0], "level": parts[1], "message": parts[2]}
+                                            ~~~~~^^^
+IndexError: list index out of range
+
+======================================================================
+FAIL: test_spaces (independent_grader.Grade.test_spaces)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/log_parser.py", line 5, in test_spaces
+    self.assertEqual(parse_line(" 2024-02-29T23:59:59Z\tWARNING  a  b \t"),
+AssertionError: {'timestamp': '', 'level': '2024-02-29T23:59:59Z\tWARNING', 'message': ''} != {'timestamp': '2024-02-29T23:59:59Z', 'level': 'WARNING', 'message': 'a  b'}
+- {'level': '2024-02-29T23:59:59Z\tWARNING', 'message': '', 'timestamp': ''}
++ {'level': 'WARNING', 'message': 'a  b', 'timestamp': '2024-02-29T23:59:59Z'}
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.003s
+
+FAILED (failures=1, errors=2)

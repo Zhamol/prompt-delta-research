@@ -1,0 +1,20 @@
+{
+  "base_sha256": "e7e8ef2ad1b6a3a3cddd0d9bc9d3a38f0f8198b69b91fa261b00a323bc267bca",
+  "current_sha256": "311706525e06ce6f986c50443de312e64c6c5792e62ff86788981b6728a62487",
+  "round_trip": true,
+  "delta_edits": [
+    {
+      "old": "{\"DEBUG\", \"INFO\", \"WARNING\", \"ERROR\"}",
+      "new": "{\"DEBUG\", \"INFO\", \"WARNING\", \"ERROR\", \"TRACE\"}"
+    },
+    {
+      "old": "# Keep this harmless revision marker: log_parser-3.\n",
+      "new": "# Keep this harmless revision marker: log_parser-4.\n# Keep this harmless revision marker: log_parser-3.\n"
+    }
+  ],
+  "task": "log_parser",
+  "round": 4,
+  "prepared_at_unix": 1794607022.0929108,
+  "source_spec_sha256": "02e34628cc149a80fe31b0b0d123dd0a8b027a6a85f007334d6e0c04057c48d8",
+  "grader_sha256": "0c954e81435deb12e4343c871049470a5ef622b104ef6978b87b07a69e4810b0"
+}

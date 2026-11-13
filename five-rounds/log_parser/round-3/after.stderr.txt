@@ -1,0 +1,8 @@
+test_invalid (independent_grader.Grade.test_invalid) ... ok
+test_order (independent_grader.Grade.test_order) ... ok
+test_spaces (independent_grader.Grade.test_spaces) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.033s
+
+OK

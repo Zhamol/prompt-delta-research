@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+tokenizer-cache/
+.replay/
+.env
+.env.*
+!.env.example
+secrets/
+.aws/
+*.pem
+*.key
+*.p12
+*.pfx
+*credentials*

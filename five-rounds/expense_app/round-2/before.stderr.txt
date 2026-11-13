@@ -1,0 +1,26 @@
+test_boundaries_unicode_and_exact_cents (independent_grader.Grade.test_boundaries_unicode_and_exact_cents) ... FAIL
+test_core_and_persistence (independent_grader.Grade.test_core_and_persistence) ... ok
+test_corrupt_storage_never_reset (independent_grader.Grade.test_corrupt_storage_never_reset) ... ok
+test_deterministic_sequence (independent_grader.Grade.test_deterministic_sequence) ... ok
+test_empty_and_separate_databases (independent_grader.Grade.test_empty_and_separate_databases) ... ok
+test_invalid_amounts_do_not_consume_ids (independent_grader.Grade.test_invalid_amounts_do_not_consume_ids) ... ok
+test_invalid_dates_categories_and_commands (independent_grader.Grade.test_invalid_dates_categories_and_commands) ... ok
+
+======================================================================
+FAIL: test_boundaries_unicode_and_exact_cents (independent_grader.Grade.test_boundaries_unicode_and_exact_cents)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/repo/graders/expense_app.py", line 82, in test_boundaries_unicode_and_exact_cents
+    self.assertEqual(row,dict(id=len(rows)+1,amount_cents=cents,category=category,date=date))
+AssertionError: {'id': 3, 'amount_cents': 102, 'category': 'Food', 'date': '2000-02-29'} != {'id': 3, 'amount_cents': 120, 'category': 'Food', 'date': '2000-02-29'}
+- {'amount_cents': 102, 'category': 'Food', 'date': '2000-02-29', 'id': 3}
+?                    -
+
++ {'amount_cents': 120, 'category': 'Food', 'date': '2000-02-29', 'id': 3}
+?                   +
+
+
+----------------------------------------------------------------------
+Ran 7 tests in 26.537s
+
+FAILED (failures=1)

@@ -1,0 +1,20 @@
+{
+  "base_sha256": "dcdfe9e713224ab534b3bc7bf192855e8e360a254378366e2210f5057c376bd1",
+  "current_sha256": "8c26985f83c1baf6cb48689297f9abc8e7e6af897064c5f81de42db5b69a412a",
+  "round_trip": true,
+  "delta_edits": [
+    {
+      "old": "fraction.ljust(2, \"0\")",
+      "new": "fraction.rjust(2, \"0\")"
+    },
+    {
+      "old": "import argparse\n",
+      "new": "# Keep this harmless revision marker: expense_app-2.\nimport argparse\n"
+    }
+  ],
+  "task": "expense_app",
+  "round": 2,
+  "prepared_at_unix": 1794606948.72733,
+  "source_spec_sha256": "3dc8d642c4327add0f7213defc231383631df571794c8238de841bc1490a726f",
+  "grader_sha256": "2d843050eb4af545ea327e55b24652ffd2026c2adc14ce70ae23dc2dff6de4a5"
+}

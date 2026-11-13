@@ -1,0 +1,2 @@
+Repair the regression under the unchanged specification.
+{"file":"ledger.py","base_sha256":"c3a962cf93c2312cc1406dc6521eed22d37b96f32d968cd8fcd64e48cf280f3c","replacements":[{"old":"state[\"next_id\"] += 1","new":"state[\"next_id\"] += 2"},{"old":"# Keep this harmless revision marker: expense_app-2.\n","new":"# Keep this harmless revision marker: expense_app-3.\n# Keep this harmless revision marker: expense_app-2.\n"}],"current_sha256":"2de7c9d8df6791753b52694c75bd0d4f1371a24b44eb86a378ce1082307aac7b"}

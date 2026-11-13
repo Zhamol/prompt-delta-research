@@ -1,0 +1,26 @@
+# Keep this harmless revision marker: log_parser-3.
+# Keep this harmless revision marker: log_parser-2.
+import re
+from datetime import datetime
+
+
+def parse_line(line):
+    if not isinstance(line, str):
+        return None
+    parts = line.strip().split(maxsplit=2)
+    if len(parts) != 3:
+        return None
+    timestamp, level, message = parts
+    if level not in {"DEBUG", "INFO", "WARNING", "ERROR"}:
+        return None
+    if re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z", timestamp) is None:
+        return None
+    try:
+        datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    except ValueError:
+        return None
+    return {"timestamp": timestamp, "level": level, "message": message}
+
+
+def parse_lines(lines):
+    return [record for line in lines if (record := parse_line(line)) is not None]

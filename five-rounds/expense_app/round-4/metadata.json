@@ -1,0 +1,20 @@
+{
+  "base_sha256": "23d8b1b5c3050afd938ce2403dee3a98d80105d48182868bda36c12214d43e6e",
+  "current_sha256": "6191b69f83c47801c14aa453c7ddc2cd17fc3f6c233e0de1ee640f6af52e762c",
+  "round_trip": true,
+  "delta_edits": [
+    {
+      "old": "r[\"category\"] == category",
+      "new": "r[\"category\"].lower() == category.lower()"
+    },
+    {
+      "old": "# Keep this harmless revision marker: expense_app-3.\n",
+      "new": "# Keep this harmless revision marker: expense_app-4.\n# Keep this harmless revision marker: expense_app-3.\n"
+    }
+  ],
+  "task": "expense_app",
+  "round": 4,
+  "prepared_at_unix": 1794607174.2126749,
+  "source_spec_sha256": "3dc8d642c4327add0f7213defc231383631df571794c8238de841bc1490a726f",
+  "grader_sha256": "2d843050eb4af545ea327e55b24652ffd2026c2adc14ce70ae23dc2dff6de4a5"
+}
