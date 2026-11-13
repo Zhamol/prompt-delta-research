@@ -4,16 +4,15 @@ Send the full task and code first. For later edits in the same conversation, sen
 
 ## How it works
 
-~~~text
-Round 1: Full specification + starting code
-                    ↓
-Rounds 2–5: Exact changes + file version hashes
-                    ↓
-Model returns a repair
-                    ↓
-Apply the edit locally → run correctness tests
-                    ↓
-Keep the accepted version for the next round
+~~~mermaid
+flowchart TD
+    A["Round 1: Full task + starting files"] --> C["Model in the same conversation"]
+    B["Rounds 2–5: Send only exact changes + version hashes"] --> C
+    C --> D["Initial solution or small repair"]
+    D --> E["Validate and apply locally"]
+    E --> F["Fresh Docker sandbox runs correctness tests"]
+    F -->|"Pass"| G["Keep the accepted code"]
+    G -->|"Next small change"| B
 ~~~
 
 Each update identifies the previous file by its SHA256 hash and supplies ordered, literal old/new replacements. The local code rejects missing or ambiguous matches. Reconstruction checks reject stale versions or corrupted updates. Ordinary code remains ordinary code.
