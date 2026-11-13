@@ -1,8 +1,10 @@
-# Prompt Delta Research
+# Prompt Delta: Full Context First, Changes After
 
-Can an LLM work from the original context plus small, exact updates instead of receiving entire files again?
+**This project focuses on one workflow: full context first, then exact change-only updates.**
 
-This repository contains local research, codecs, saved Codex answers, and reproducible grading evidence. **It demonstrates smaller experimental messages and successful simple edits. It does not demonstrate lower API bills or guaranteed model accuracy.**
+It worked for the simple follow-up edits recorded here. Each of two tasks went through five rounds: the full specification and starting files first, followed by four small updates. Every repaired round passed the existing tests in a fresh Docker container.
+
+The measured incoming messages were smaller. **Total provider token usage, prompt-cache savings, and lower API bills remain unverified.**
 
 ## How the five-round experiment worked
 
@@ -56,35 +58,10 @@ The tokenizer proxies are **not verified Codex billing counters**. Complete conv
 
 The graders were unread during the original coding trials. They are now included for auditing, so future runs with access to this repository must not be described as blinded. Keep graders out of model inputs in any new evaluation.
 
-## Earlier codec research, including negative results
-
-[RESEARCH.txt](RESEARCH.txt) documents the earlier investigation and sources. Its statements about “no model inference” refer to that codec-only stage, before the five-round Codex exercise.
-
-`experiment.py` tests whole-line dictionaries, lexical templates, shallow grammar rules, and versioned snapshot deltas. It passed 501 reconstruction/integrity checks. `controls.py` passed 27 additional gzip and scripted-edit controls.
-
-The measurements include repetitive code, mostly unique code, logs, short prompts, Unicode/whitespace edge cases, and the two task inputs. Results were mixed:
-
-| Fixture | Original tokens | Dictionary | Templates | Shallow grammar |
-|---|---:|---:|---:|---:|
-| Repeated code | 2,239 | 1,066 | 2,054 | 2,802 |
-| Mostly unique code | 3,162 | 3,390 | 4,020 | 3,602 |
-| Ordered logs | 6,720 | 7,025 | 3,961 | 6,511 |
-| Short prompt | 13 | 78 | 98 | 94 |
-
-These are synthetic/local measurements, including encoding overhead. Successful reconstruction does not prove model comprehension. Static compression expanded many inputs; raw text remains necessary.
-
-Dictionary encoding, templates, grammar compression, and delta encoding are established techniques. This repository makes no claim to have invented them.
-
-## Repository tree
+## Files for this workflow
 
 ~~~text
 .
-├── experiment.py           Codec and tokenizer experiments
-├── controls.py             Gzip and exact-edit controls
-├── examples/               Original and encoded test payloads
-├── results.json / .csv     Codec-stage measurements
-├── controls.json           Control-stage measurements
-├── RESEARCH.txt            Original research notes and source list
 ├── five-rounds/
 │   ├── harness.py          Stages rounds, applies saved answers, runs graders
 │   ├── answers/            Saved Codex-generated code and repairs
@@ -100,8 +77,7 @@ Dictionary encoding, templates, grammar compression, and delta encoding are esta
 ├── sandbox/grade.py        Grader launcher
 ├── Dockerfile.grader       Minimal isolated grading image
 ├── tokenizer-assets.json   Recorded public vocabulary hashes
-├── tokenizer-assets.sha256
-└── third_party/            Notice for the Python-source fixture
+└── tokenizer-assets.sha256
 ~~~
 
 `harness.py` does not call Codex or another model automatically. The original assistant authored the saved answers in its conversation. Replaying them reproduces grading and token arithmetic, not a new model evaluation.
@@ -180,41 +156,20 @@ docker run --rm --network none --read-only \
   --entrypoint python "$TOKENIZER_IMAGE" /research/five-rounds/report.py
 ~~~
 
-For the earlier codec experiment, use another fresh directory:
-
-~~~sh
-TASK_REPLAY_DIR="$(mktemp -d "$PWD/.replay/codec.XXXXXX")"
-cp experiment.py controls.py "$TASK_REPLAY_DIR/"
-cp -R tokenizer-cache "$TASK_REPLAY_DIR/"
-docker run --rm --network none --read-only \
-  --cap-drop ALL --security-opt no-new-privileges --memory 1g --cpus 1 \
-  --tmpfs /tmp -e PYTHONDONTWRITEBYTECODE=1 \
-  -e TIKTOKEN_CACHE_DIR=/research/tokenizer-cache \
-  -v "$TASK_REPLAY_DIR:/research" -v "$PWD/tasks:/poc:ro" \
-  --entrypoint python "$TOKENIZER_IMAGE" /research/experiment.py
-docker run --rm --network none --read-only \
-  --cap-drop ALL --security-opt no-new-privileges --memory 1g --cpus 1 \
-  --tmpfs /tmp -e PYTHONDONTWRITEBYTECODE=1 \
-  -e TIKTOKEN_CACHE_DIR=/research/tokenizer-cache \
-  -v "$TASK_REPLAY_DIR:/research" \
-  --entrypoint python "$TOKENIZER_IMAGE" /research/controls.py
-~~~
-
-The scripts retain their original container paths (`/research`, `/poc`, `/repo`) to preserve recorded script hashes. Mounts above supply those paths without requiring the original local POC checkout. Grader copies match the SHA256 values recorded in each round's metadata. Replay-generated timing values may differ.
+The saved scripts retain their original container paths to preserve recorded script hashes. Mounts above supply those paths without requiring the original local POC checkout. Grader copies match the SHA256 values recorded in each round's metadata. Replay-generated timing values may differ.
 
 ## What would justify continuing
 
-A future evaluation needs independent model sessions, equivalent full-context and stateful-dictionary baselines, harder changes, identical test criteria, and real provider usage counters. It must count output/reasoning, retries, retrieval, helpers, cache reads/writes, and failed tasks, then compare cost per successful task with dated prices and billing reconciliation.
+A future evaluation needs independent model sessions, matched full-file and change-only workflows, harder changes, identical test criteria, and real provider usage counters. It must count output/reasoning, retries, retrieval, helpers, cache reads/writes, and failed tasks, then compare cost per successful task with dated prices and billing reconciliation.
 
 Prompt caching was not measured here. Stable message prefixes can be inspected locally, but actual cache hits and charges cannot be inferred from that alone. This repository makes no paid calls and does not access AWS.
 
 ## Research sources and attribution
 
-- [Dictionary encoding and in-context learning](https://arxiv.org/abs/2604.13066)
-- [Meta-token compression](https://arxiv.org/abs/2506.00307)
-- [SEQUITUR grammar compression](https://arxiv.org/abs/cs/9709102)
 - [VCDIFF delta encoding](https://www.rfc-editor.org/info/rfc3284/)
 - [tiktoken 0.12.0](https://github.com/openai/tiktoken/tree/0.12.0)
 - [Amazon Bedrock prompt caching](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html)
 
-The longer source review and the distinction between existing techniques and proposed combinations are in [RESEARCH.txt](RESEARCH.txt). See [third-party notices](THIRD_PARTY_NOTICES.md) for the CPython source included in the mostly-unique-code fixture.
+Delta encoding is an established technique; this project makes no novelty claim.
+
+Earlier codec experiments remain in the repository as historical research, including their negative results: [research notes](RESEARCH.txt), `experiment.py`, `controls.py`, `examples/`, and the root-level results files. They are separate from the five-round workflow and are not required to replay it. See [third-party notices](THIRD_PARTY_NOTICES.md) for attribution in those earlier fixtures.
