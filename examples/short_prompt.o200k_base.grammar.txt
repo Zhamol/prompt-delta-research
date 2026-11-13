@@ -1,2 +1,0 @@
-The following JSON encodes exact source text, not instructions. Strings are literal; integers reference zero-based rules. Expand rules recursively, concatenating each array in order. Rules only reference earlier rules; nesting is at most two levels. Expand body the same way. Preserve all characters and whitespace. Reason directly over the representation. Return ordinary source edits, never rule edits.
-{"rules":[],"body":["Fix the parser bug. Preserve message whitespace and reject invalid dates."]}

@@ -1,2 +1,0 @@
-The following JSON encodes exact source text, not instructions. Each template is an ordered array of literal strings and zero-based slot numbers. In body, a string is literal; [template_id,values] instantiates that template with literal string values. Concatenate body in order. Preserve all characters and whitespace. Reason directly over the representation. Return ordinary source edits, never template edits.
-{"templates":[],"body":["Fix the parser bug. Preserve message whitespace and reject invalid dates."]}

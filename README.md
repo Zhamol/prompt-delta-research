@@ -1,175 +1,104 @@
-# Prompt Delta: Full Context First, Changes After
+# Prompt Delta
 
-**This project focuses on one workflow: full context first, then exact change-only updates.**
+Send the full task and code first. For later edits in the same conversation, send only the exact changes.
 
-It worked for the simple follow-up edits recorded here. Each of two tasks went through five rounds: the full specification and starting files first, followed by four small updates. Every repaired round passed the existing tests in a fresh Docker container.
+## How it works
 
-The measured incoming messages were smaller. **Total provider token usage, prompt-cache savings, and lower API bills remain unverified.**
-
-## How the five-round experiment worked
-
-For each of two tasks, round 1 supplied the specification and starting files. Codex wrote an initial solution. Rounds 2–5 introduced one small regression and one harmless comment change. Codex received exact old/new text replacements and file hashes, then produced a repair while keeping the other changes.
-
-Earlier code remained in the conversation. References do not give the model access to files that are absent from its context.
-
-~~~mermaid
-flowchart TD
-    A["Round 1: full task and starting files"] --> C["Codex uses the retained conversation"]
-    B["Rounds 2–5: exact changes and version hashes"] --> C
-    C --> D["Create code or a small repair"]
-    D --> E["Apply exact replacements locally"]
-    E --> F["Fresh Docker container runs independent tests"]
-    F --> G["Save code and results"]
-    G -->|"Next small change"| B
+~~~text
+Round 1: Full specification + starting code
+                    ↓
+Rounds 2–5: Exact changes + file version hashes
+                    ↓
+Model returns a repair
+                    ↓
+Apply the edit locally → run correctness tests
+                    ↓
+Keep the accepted version for the next round
 ~~~
 
-Example of a repair, instead of resending the entire expense tracker:
+Each update identifies the previous file by its SHA256 hash and supplies ordered, literal old/new replacements. The local code rejects missing or ambiguous matches. Reconstruction checks reject stale versions or corrupted updates. Ordinary code remains ordinary code.
 
-~~~diff
-- state["next_id"] += 2
-+ state["next_id"] += 1
+The earlier source must remain available in the model's conversation. Start a new conversation with the full source again.
+
+## Use the demo
+
+Install Git and Docker, start Docker, then run:
+
+~~~sh
+git clone https://github.com/Zhamol/prompt-delta-research.git
+cd prompt-delta-research
+./replay.sh
 ~~~
 
-The local adapter rejects missing or ambiguous replacement text. Version checks protect against applying an update to the wrong source. These guards check edit application; the tests check behavior.
+The first run downloads pinned container images and public tokenizer data. No API key or AWS account is needed.
+
+The command replays the saved answers for both tasks through five rounds each. Every round runs in a fresh Docker container with networking disabled. Task code and graders execute inside those containers. Your home directory, credentials, and Docker socket are not mounted.
+
+Replay checks that:
+
+- Saved edits reproduce the recorded solutions exactly.
+- All ten repaired rounds pass the correctness tests.
+- The buggy starting versions are rejected, including the category-filter edge case.
+- Change packets reconstruct exactly, and stale versions and ambiguous edits are rejected.
+
+Results are written to a new directory on every run:
+
+~~~text
+.replay/run.<id>/
+├── five-rounds/       Replayed inputs, outputs, and grading results
+├── logs/             Diagnostics for each round
+└── report/
+    ├── SUMMARY.txt
+    ├── results.json
+    ├── tokens.csv
+    └── grades.csv
+~~~
+
+This is an offline replay of recorded model answers. It does not generate new answers or automatically connect to a coding assistant.
 
 ## Recorded results
 
-Recorded on **2026-11-13**. Counts below use the local **o200k_base tokenizer proxy** and include the five incoming task messages, format instructions, JSON syntax, hashes, and negative-control summaries.
+The original experiment ran on November 13, 2026.
 
-| Task | Repaired rounds passing existing tests | Full-file incoming tokens | Change-packet incoming tokens | Incoming reduction |
+| Task | Repaired rounds passing tests | Full-file incoming tokens | Change-only incoming tokens | Reduction |
 |---|---:|---:|---:|---:|
-| Log parser | 5/5 | 1,429 | 1,192 | 16.59% |
-| Expense tracker | 5/5 | 5,926 | 1,762 | 70.27% |
+| Log parser | 5/5 | 1,429 | 1,192 | 16.6% |
+| Expense tracker | 5/5 | 5,926 | 1,762 | 70.3% |
 
-Including the saved answer and acknowledgment payloads, the reductions are **9.83%** and **51.82%** respectively. The full-file arm is an offline calculation using the same saved answers, not a separately executed model arm.
+Including the saved answer and acknowledgment payloads, the reductions were 9.83% and 51.82%.
 
-- All 10 repaired rounds passed: 50 test-method executions, repeating the same 3 parser and 7 expense tests.
-- All 8 change packets reconstructed their source exactly; 36 integrity checks passed.
-- The two starting versions and 7 of 8 later mutations failed the existing grader.
-- **Known coverage gap:** case-insensitive category filtering passed the expense grader. A supplementary exact-case probe showed that the altered implementation returned both `food` and `Food`; the repaired implementation returned only `food`.
+[Recorded report](five-rounds/SUMMARY.txt) · [Token counts](five-rounds/tokens.csv) · [Grades](five-rounds/grades.csv) · [Detailed evidence](five-rounds/results.json)
 
-Read the [summary](five-rounds/SUMMARY.txt), [full evidence](five-rounds/results.json), [token counts](five-rounds/tokens.csv), and [grades](five-rounds/grades.csv).
+## How the results were obtained
 
-### What these results do not establish
+1. Start each task with its full specification and starting files. The expense app starts with a specification only.
+2. Produce the initial solution.
+3. Introduce one small regression and one harmless comment change per round.
+4. Send exact changes against the previously accepted source, retaining the earlier conversation.
+5. Apply the returned repair and grade the resulting code in a fresh Docker container.
+6. Count the saved full-file and change-only messages with tiktoken 0.12.0 using o200k_base. Counts include format instructions, JSON syntax, hashes, and the saved validation summaries.
 
-This was one shared Codex conversation. The same assistant designed the mutations and wrote the repairs. Most repairs reverse a simple, already-known mutation. The expense app was built once and then repaired four times; it was not independently rebuilt five times.
+The full-file comparison is an offline count using the same saved answers. It was not a separate set of model runs. These were five sequential rounds per task, not five independent builds; the changes and repairs were authored in the same session.
 
-The tokenizer proxies are **not verified Codex billing counters**. Complete conversation/tool wrappers, setup, reasoning tokens, and actual provider cache counters were unavailable or outside the measured payloads. There are no measured USD savings. Fresh Docker containers isolate execution; they do not make the model sessions independent.
+The figures measure message payloads, not actual provider billing. Total conversation overhead, reasoning tokens, cache reads/writes, and USD savings were not measured. Replay recounts the original messages and reports its fresh correctness checks separately.
 
-The graders were unread during the original coding trials. They are now included for auditing, so future runs with access to this repository must not be described as blinded. Keep graders out of model inputs in any new evaluation.
+The original grader missed one category-filter regression. Replay now includes the existing independent case-sensitive filter check; the original recorded results remain unchanged.
 
-## Files for this workflow
+## Files
 
 ~~~text
-.
-├── five-rounds/
-│   ├── harness.py          Stages rounds, applies saved answers, runs graders
-│   ├── answers/            Saved Codex-generated code and repairs
-│   ├── log_parser/         Five rounds: inputs, outputs, prompts, test logs
-│   ├── expense_app/        Five rounds plus the supplementary case probe
-│   ├── case_probe.py       Supplementary category-filter check
-│   ├── report.py           Token accounting and integrity checks
-│   ├── results.json
-│   ├── tokens.csv / grades.csv
-│   └── SUMMARY.txt
-├── tasks/                  Two specifications and the original parser starter
-├── graders/                Original independent graders, now inspectable
-├── sandbox/grade.py        Grader launcher
-├── Dockerfile.grader       Minimal isolated grading image
-├── tokenizer-assets.json   Recorded public vocabulary hashes
-└── tokenizer-assets.sha256
+replay.sh                  One-command offline replay
+five-rounds/harness.py      Prepare versions and apply exact edits
+five-rounds/case_probe.py   Category-filter edge-case check
+five-rounds/report.py       Integrity checks and token accounting
+five-rounds/answers/        Saved answers for the ten rounds
+five-rounds/log_parser/     Recorded parser inputs, outputs, and evidence
+five-rounds/expense_app/    Recorded app inputs, outputs, and evidence
+tasks/                     Specifications and original starting files
+graders/                   Independent correctness tests
+sandbox/grade.py           Grader launcher
+Dockerfile.grader          Pinned grading environment
+tokenizer-assets.sha256    Public tokenizer data checksums
 ~~~
 
-`harness.py` does not call Codex or another model automatically. The original assistant authored the saved answers in its conversation. Replaying them reproduces grading and token arithmetic, not a new model evaluation.
-
-## Replay the saved code safely
-
-Requirements: Git and Docker. Run commands from this repository root. Execute the task implementations and graders inside containers, not on the host.
-
-~~~sh
-git clone --branch codex/research-package https://github.com/Zhamol/prompt-delta-research.git
-cd prompt-delta-research
-docker build -f Dockerfile.grader -t prompt-delta-grader:local .
-~~~
-
-Run every saved repaired version against the original grader:
-
-~~~sh
-for task in log_parser expense_app; do
-  for round in 1 2 3 4 5; do
-    docker run --rm --network none --read-only \
-      --cap-drop ALL --security-opt no-new-privileges \
-      --pids-limit 64 --memory 256m --cpus 1 \
-      --tmpfs /tmp:rw,nosuid,size=32m \
-      -v "$PWD/five-rounds/$task/round-$round/output:/submission:ro" \
-      prompt-delta-grader:local \
-      timeout 90 python /repo/sandbox/grade.py "$task"
-  done
-done
-~~~
-
-Each invocation creates a fresh container. Only that saved submission is mounted; no home directory, Docker socket, or credentials are mounted. To inspect a negative control, use `input` instead of `output`. A nonzero exit is expected for the recorded failing inputs; expense round 4 is the documented exception.
-
-## Reproduce tokenizer measurements
-
-The existing LiteLLM image is used only as a pinned Python/tiktoken runtime. Its gateway is not started. No LiteLLM, Claude Code, TokenEconomizer, AWS, or model API integration is implemented here.
-
-Pinned runtimes:
-
-| Purpose | Version / immutable reference |
-|---|---|
-| Grading base | `python:3.12.12-slim-bookworm@sha256:593bd06efe90efa80dc4eee3948be7c0fde4134606dd40d8dd8dbcade98e669c` |
-| Tokenizer runtime | `ghcr.io/berriai/litellm:v1.108.7@sha256:3c73aee257be4888fbbbecdce615e12487579a618fcc7dfb278264a3467a9f9f` |
-| Runtime Python / tokenizer | Python 3.13.18 / tiktoken 0.12.0 |
-| Tokenizer proxies | `o200k_base`, `cl100k_base` |
-
-Pins preserve the recorded environment; they are not a claim that the images are perpetually maintained or guaranteed safe.
-
-Download the public tokenizer data once and verify its recorded hashes. This requires network access but no credentials or model calls. The cache is excluded from Git.
-
-~~~sh
-TOKENIZER_IMAGE='ghcr.io/berriai/litellm:v1.108.7@sha256:3c73aee257be4888fbbbecdce615e12487579a618fcc7dfb278264a3467a9f9f'
-docker pull "$TOKENIZER_IMAGE"
-mkdir -p tokenizer-cache .replay
-curl --fail --location \
-  https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken \
-  --output tokenizer-cache/9b5ad71b2ce5302211f9c61530b329a4922fc6a4
-curl --fail --location \
-  https://openaipublic.blob.core.windows.net/encodings/o200k_base.tiktoken \
-  --output tokenizer-cache/fb374d419588a4632f3f557e76b4b70aebbca790
-shasum -a 256 -c tokenizer-assets.sha256
-~~~
-
-Recalculate the five-round report in a new directory, preserving the recorded evidence:
-
-~~~sh
-TASK_REPLAY_DIR="$(mktemp -d "$PWD/.replay/report.XXXXXX")"
-mkdir "$TASK_REPLAY_DIR/five-rounds"
-cp -R five-rounds/log_parser five-rounds/expense_app "$TASK_REPLAY_DIR/five-rounds/"
-cp five-rounds/harness.py five-rounds/report.py "$TASK_REPLAY_DIR/five-rounds/"
-cp -R tokenizer-cache "$TASK_REPLAY_DIR/"
-docker run --rm --network none --read-only \
-  --cap-drop ALL --security-opt no-new-privileges --memory 1g --cpus 1 \
-  --tmpfs /tmp -e PYTHONDONTWRITEBYTECODE=1 \
-  -e TIKTOKEN_CACHE_DIR=/research/tokenizer-cache \
-  -v "$TASK_REPLAY_DIR:/research" \
-  --entrypoint python "$TOKENIZER_IMAGE" /research/five-rounds/report.py
-~~~
-
-The saved scripts retain their original container paths to preserve recorded script hashes. Mounts above supply those paths without requiring the original local POC checkout. Grader copies match the SHA256 values recorded in each round's metadata. Replay-generated timing values may differ.
-
-## What would justify continuing
-
-A future evaluation needs independent model sessions, matched full-file and change-only workflows, harder changes, identical test criteria, and real provider usage counters. It must count output/reasoning, retries, retrieval, helpers, cache reads/writes, and failed tasks, then compare cost per successful task with dated prices and billing reconciliation.
-
-Prompt caching was not measured here. Stable message prefixes can be inspected locally, but actual cache hits and charges cannot be inferred from that alone. This repository makes no paid calls and does not access AWS.
-
-## Research sources and attribution
-
-- [VCDIFF delta encoding](https://www.rfc-editor.org/info/rfc3284/)
-- [tiktoken 0.12.0](https://github.com/openai/tiktoken/tree/0.12.0)
-- [Amazon Bedrock prompt caching](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html)
-
-Delta encoding is an established technique; this project makes no novelty claim.
-
-Earlier codec experiments remain in the repository as historical research, including their negative results: [research notes](RESEARCH.txt), `experiment.py`, `controls.py`, `examples/`, and the root-level results files. They are separate from the five-round workflow and are not required to replay it. See [third-party notices](THIRD_PARTY_NOTICES.md) for attribution in those earlier fixtures.
+The tokenizer container is used only to run Python and tiktoken; it does not start a model gateway. Container references and tokenizer-data hashes are pinned in the replay script and Dockerfile.

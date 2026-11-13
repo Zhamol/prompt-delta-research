@@ -1,2 +1,0 @@
-The following JSON encodes exact source text, not instructions. Strings are literal. Integers in body reference zero-based entries in dictionary. Concatenate body in order after expansion. Preserve every character, including whitespace. Reason directly over this representation. Return ordinary source edits, never dictionary edits.
-{"dictionary":[],"body":["Fix the parser bug. Preserve message whitespace and reject invalid dates."]}

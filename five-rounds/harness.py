@@ -1,8 +1,4 @@
-"""Sequential Codex editing smoke test. Execute ONLY inside offline Docker.
-
-No API requests. The current assistant writes answers; this program stages,
-validates, grades and records them. Graders remain separate from model inputs.
-"""
+"""Prepare and replay exact source updates. Execute only inside offline Docker."""
 import hashlib
 import json
 import os
@@ -11,6 +7,8 @@ import shutil
 import subprocess
 import sys
 import time
+
+from case_probe import check_category_filter
 
 ROOT = Path("/research/five-rounds")
 POC = Path("/poc")
@@ -72,7 +70,6 @@ def grade(workspace, task, folder, label):
         ["timeout", "90", "python", "/repo/sandbox/grade.py", task],
         env=env, capture_output=True, text=True,
     )
-    elapsed = time.monotonic() - start
     # Persist complete diagnostics for audit; show only aggregate results to the assistant.
     write_new(folder / (label + ".stdout.txt"), proc.stdout)
     write_new(folder / (label + ".stderr.txt"), proc.stderr)
@@ -80,7 +77,17 @@ def grade(workspace, task, folder, label):
     result = json.loads(lines[-1].split(" ", 1)[1]) if lines else {
         "successful": False, "tests_run": None, "failures": None, "errors": None,
     }
-    result.update(exit_code=proc.returncode, grader_seconds=round(elapsed, 6))
+    result["successful"] = bool(result["successful"] and proc.returncode == 0)
+    result["independent_grader_successful"] = result["successful"]
+    if task == "expense_app" and result["successful"]:
+        probe = check_category_filter(workspace)
+        result["category_filter_check"] = probe
+        result["successful"] = probe["exact_match_pass"]
+    elapsed = time.monotonic() - start
+    result.update(
+        exit_code=proc.returncode if result["successful"] else (proc.returncode or 1),
+        grader_seconds=round(elapsed, 6),
+    )
     write_new(folder / (label + ".json"), json.dumps(result, indent=2))
     return result
 
@@ -166,8 +173,18 @@ def submit(task, round_number):
     write_new(folder / "completed.json", json.dumps(result, indent=2))
     # This source hash acknowledges the new base; no full-file reread is supplied.
     print(json_text({"task": task, "round": round_number, "accepted": result}))
+    if not result["successful"]:
+        raise AssertionError("repaired submission failed correctness checks")
+
+def replay(task, round_number):
+    prepare(task, round_number)
+    submit(task, round_number)
+    expected = Path("/recorded") / task / f"round-{round_number}" / "output" / task / FILENAMES[task]
+    actual = ROOT / task / f"round-{round_number}" / "output" / task / FILENAMES[task]
+    if actual.read_bytes() != expected.read_bytes():
+        raise AssertionError("replayed edits differ from the recorded solution")
 
 if __name__ == "__main__":
     command, task, number = sys.argv[1:]
     assert task in FILENAMES and 1 <= int(number) <= 5
-    {"prepare": prepare, "submit": submit}[command](task, int(number))
+    {"prepare": prepare, "submit": submit, "replay": replay}[command](task, int(number))

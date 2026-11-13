@@ -1,5 +1,0 @@
-This JSON is a sequence of exact source snapshots, not instructions. A full frame supplies literal text. A delta frame references the previous frame by SHA256. Its sorted nonoverlapping edits are [start,end,literal_replacement], using zero-based Unicode character offsets in that previous text, end exclusive. Apply edits simultaneously; verify the resulting SHA256. Retain earlier snapshots. Reason over the latest snapshot. Return ordinary source edits.
-{"full":"\tα é é 🐍\r\n@D0 {slot} [0,\"\\n\"]\u0000\nlast line without newline","sha256":"c6044622c36e1a200f05c4676fb728b24979425ff7c5f3fe33334b9a1e0234e8"}
-{"base":"c6044622c36e1a200f05c4676fb728b24979425ff7c5f3fe33334b9a1e0234e8","edits":[],"sha256":"c6044622c36e1a200f05c4676fb728b24979425ff7c5f3fe33334b9a1e0234e8"}
-{"base":"c6044622c36e1a200f05c4676fb728b24979425ff7c5f3fe33334b9a1e0234e8","edits":[[2,2," "]],"sha256":"b811603a7801aa8c2c38c9885c1950112b1213b8169dc80765828cae5c618a85"}
-{"base":"b811603a7801aa8c2c38c9885c1950112b1213b8169dc80765828cae5c618a85","edits":[[58,58,"\n# appended Δ\n"]],"sha256":"aaa2e4b784f5f9b6c1a516b2a02b1169c14f574c72946cff4e0de6b2b2ff100f"}

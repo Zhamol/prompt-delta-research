@@ -1,13 +1,16 @@
-"""Measure saved task payloads, not Codex billing. Run in the tokenizer container."""
+"""Recount recorded messages and verify fresh offline replay results."""
 import csv
 import hashlib
 import importlib.metadata
 import json
+import os
 from pathlib import Path
 import tiktoken
 from harness import FILENAMES, FORMAT, replace_unique, sha
 
-ROOT = Path("/research/five-rounds")
+ROOT = Path(os.environ.get("DELTA_EVIDENCE_ROOT", "/research/five-rounds"))
+OUT = Path(os.environ.get("DELTA_REPORT_DIR", str(ROOT)))
+OUT.mkdir(parents=True, exist_ok=True)
 def read(p):
     return p.read_bytes().decode("utf-8")
 def load(p):
@@ -131,7 +134,7 @@ for encoding_name in ("o200k_base", "cl100k_base"):
 
 result = {
     "design": "Two tasks, five sequential rounds each; first full input, then four seeded regressions as exact change packets.",
-    "model_execution": "Answers authored by the current Codex assistant, in one shared conversation; no independent sessions or baseline model arm.",
+    "model_execution": "Saved answers from one retained model conversation; no independent sessions or baseline model arm.",
     "limitations": [
         "The same assistant designed the changes and wrote the repairs. Most repairs reverse simple, known mutations.",
         "This is a smoke test of sequential editing, not a blind accuracy benchmark or five independent repetitions.",
@@ -149,44 +152,79 @@ result = {
     "grader_image": "sha256:b75dc32684cd7b5f2550cb49360f9da57bc3a414f5881543c4e9e1185997f2de",
     "tokenizer_image": "ghcr.io/berriai/litellm:v1.108.7@sha256:3c73aee257be4888fbbbecdce615e12487579a618fcc7dfb278264a3467a9f9f",
     "integrity_checks_passed": integrity_checks,
-    "script_hashes": {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
-                      for name in ("harness.py", "report.py")},
+    "script_hashes": {name: hashlib.sha256((Path(__file__).parent / name).read_bytes()).hexdigest()
+                      for name in ("harness.py", "report.py", "case_probe.py")},
     "supplementary_case_probe": load(ROOT / "expense_app/round-4/supplementary-case-probe.json"),
     "rounds": rounds, "token_counts": rows, "totals": totals,
 }
-put(ROOT / "results.json", json.dumps(result, indent=2))
-with (ROOT / "tokens.csv").open("x", newline="") as stream:
+replay_root = os.environ.get("DELTA_REPLAY_ROOT")
+if replay_root:
+    replay_rows = []
+    for task, name in FILENAMES.items():
+        for number in range(1, 6):
+            folder = Path(replay_root) / task / f"round-{number}"
+            before = load(folder / "before.json")
+            after = load(folder / "completed.json")
+            if before["successful"] or not after["successful"]:
+                raise AssertionError("fresh replay did not reject the bug and accept its repair")
+            if read(folder / "output" / task / name) != read(ROOT / task / f"round-{number}" / "output" / task / name):
+                raise AssertionError("fresh replay differs from the recorded solution")
+            replay_rows.append({
+                "task": task, "round": number,
+                "passed": after["successful"],
+                "negative_control_rejected": not before["successful"],
+                "tests_run": after["tests_run"],
+                "category_filter_check": after.get("category_filter_check"),
+                "grader_seconds": after["grader_seconds"],
+            })
+    result["fresh_replay"] = {
+        "model_calls": 0,
+        "grader_image": os.environ.get("DELTA_GRADER_IMAGE"),
+        "rounds_passed": len(replay_rows),
+        "negative_controls_rejected": len(replay_rows),
+        "independent_test_executions": sum(row["tests_run"] for row in replay_rows),
+        "category_filter_checks": sum(row["category_filter_check"] is not None for row in replay_rows),
+        "rounds": replay_rows,
+    }
+
+put(OUT / "results.json", json.dumps(result, indent=2))
+with (OUT / "tokens.csv").open("x", newline="") as stream:
     writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
     writer.writeheader()
     writer.writerows(rows)
-with (ROOT / "grades.csv").open("x", newline="") as stream:
+with (OUT / "grades.csv").open("x", newline="") as stream:
     writer = csv.DictWriter(stream, fieldnames=list(rounds[0]))
     writer.writeheader()
     writer.writerows(rounds)
-lines = [
-    "FIVE-ROUND SEQUENTIAL EDITING SMOKE TEST",
-    "Full starting context, then four lossless change packets. Existing POC unchanged.",
+lines = ["PROMPT DELTA", ""]
+if replay_root:
+    fresh = result["fresh_replay"]
+    lines += [
+        "Fresh offline verification",
+        f"Repaired rounds passing: {fresh['rounds_passed']}/10",
+        f"Buggy inputs rejected: {fresh['negative_controls_rejected']}/10",
+        f"Independent test executions: {fresh['independent_test_executions']}",
+        f"Additional category-filter checks: {fresh['category_filter_checks']}",
+    ]
+lines += [
+    f"Integrity checks passed: {integrity_checks}",
     "",
-    f"Completed: {sum(r['passed'] for r in rounds)}/10 rounds; "
-    f"{sum(r['tests_run'] or 0 for r in rounds)} hidden-test method executions.",
-    f"Failed starting versions/regressions: {sum(not r['before_success'] for r in rounds)}/10.",
-    f"Integrity checks: {integrity_checks}.",
-    "",
-    "o200k_base PROXY incoming payload tokens (all five rounds; includes codec overhead):",
+    "Recorded incoming-message tokens (2026-11-13, o200k_base)",
+    "Task | Full-file | Change-only | Reduction",
 ]
 for row in totals:
     if row["tokenizer"] == "o200k_base":
         lines.append(
-            f"{row['task']}: full {row['full_incoming_tokens']}; delta {row['delta_incoming_tokens']}; "
-            f"reduction {row['incoming_reduction_percent']}%. "
-            f"Including common answer/ack payloads: {row['input_output_ack_reduction_percent']}%."
+            f"{row['task']} | {row['full_incoming_tokens']} | "
+            f"{row['delta_incoming_tokens']} | {row['incoming_reduction_percent']}%"
         )
-lines += ["", "Round results:"]
-for row in rounds:
-    lines.append(f"{row['task']} {row['round']}: passed={row['passed']}; tests={row['tests_run']}; "
-                 f"grading_seconds={row['grader_seconds']}; "
-                 f"rejected_before_repair={not row['before_success']}")
-lines += ["", "LIMITS"] + result["limitations"]
+lines += [
+    "",
+    "Counts include format instructions, JSON, hashes, and saved validation summaries.",
+    "Replay uses saved answers; no new model calls. Full-file counts are an offline comparison.",
+    "Provider usage, cache savings, and USD savings were not measured.",
+    "Detailed counts and verification records: results.json",
+]
 text = "\n".join(lines) + "\n"
-put(ROOT / "SUMMARY.txt", text)
+put(OUT / "SUMMARY.txt", text)
 print(text)
